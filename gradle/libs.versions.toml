@@ -1,0 +1,82 @@
+[versions]
+camelVersion                = '3.19.0'
+springBootVersion           = '2.7.5'
+springdocOpenapiVersion     = '1.6.9'
+swagger2Version             = '3.0.0'
+
+[libraries]
+##############
+# SpringBoot #
+##############
+springBootDataRedis         = { module = "org.springframework.boot:spring-boot-starter-data-redis", version.ref = "springBootVersion" }
+springBootAop               = { module = "org.springframework.boot:spring-boot-starter-aop",        version.ref = "springBootVersion" }
+springBootActuator          = { module = "org.springframework.boot:spring-boot-starter-actuator",   version.ref = "springBootVersion" }
+springBootValidation        = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "springBootVersion" }
+##############
+# Camel      #
+##############
+camelSpringBootStarter      = { module = "org.apache.camel.springboot:camel-spring-boot-starter",   version.ref = "camelVersion" }
+camelServletStarter         = { module = "org.apache.camel.springboot:camel-servlet-starter",       version.ref = "camelVersion" }
+camelServiceStarter         = { module = "org.apache.camel.springboot:camel-service-starter",       version.ref = "camelVersion" }
+camelRestStarter            = { module = "org.apache.camel.springboot:camel-rest-starter",          version.ref = "camelVersion" }
+camelCoreStarter            = { module = "org.apache.camel.springboot:camel-core-starter",          version.ref = "camelVersion" }
+camelJacksonStarter         = { module = "org.apache.camel.springboot:camel-jackson-starter",       version.ref = "camelVersion" }
+camelKafkaStarter           = { module = "org.apache.camel.springboot:camel-kafka-starter",         version.ref = "camelVersion" }
+#camelUndertowStarter        = { module = "org.apache.camel.springboot:camel-undertow-starter",      version.ref = "camelVersion" }
+camelKafkaConnector         = { module = "org.apache.camel.kafkaconnector:camel-kafka-connector",   version.ref = "camelVersion" }
+camelRestSwaggerStarter     = { module = "org.apache.camel.springboot:camel-rest-swagger-starter",  version.ref = "camelVersion" }
+#camelSwaggerJavaStarter     = { module = "org.apache.camel.springboot:camel-swagger-java-starter",  version.ref = "camelVersion" }
+camelOpenapiJavaStarter     = { module = "org.apache.camel.springboot:camel-openapi-java-starter",  version.ref = "camelVersion" }
+#camelSpringdocStarter       = { module = "org.apache.camel.springboot:camel-springdoc-starter",     version.ref = "camelVersion" }
+camelSagaStarter            = { module = "org.apache.camel.springboot:camel-saga-starter",          version.ref = "camelVersion" }
+camelLraStarter             = { module = "org.apache.camel.springboot:camel-lra-starter",           version.ref = "camelVersion" }
+camelHttpCommonStarter      = { module = "org.apache.camel.springboot:camel-http-common-starter",   version = "3.12.0" }
+camelHttp4Starter           = { module = "org.apache.camel:camel-http4-starter",                    version = "2.25.4" }
+##############
+# Swagger    #
+##############
+springfoxSwagger2           = { module = "io.springfox:springfox-boot-starter",                     version.ref = "swagger2Version" }
+springfoxSwaggerUi          = { module = "io.springfox:springfox-swagger-ui",                       version.ref = "swagger2Version" }
+springdocOpenapiUi          = { module = "org.springdoc:springdoc-openapi-ui",                      version.ref = "springdocOpenapiVersion" }
+springfoxOas                = { module = "io.springfox:springfox-oas",                              version.ref = "swagger2Version" }
+
+
+#implementation 'org.springframework.boot:spring-boot-starter-undertow'
+#implementation 'org.springframework.boot:spring-boot-starter-web'
+#implementation 'org.springframework.boot:spring-boot-starter-web-services'
+#implementation 'org.springframework.boot:spring-boot-starter-jta-bitronix:2.4.13'
+#implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+#implementation 'org.springframework.boot:spring-boot-starter-aop'
+#implementation 'org.springframework.boot:spring-boot-starter-actuator'
+#implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+#implementation 'org.apache.camel.springboot:camel-servlet-starter:3.19.0'
+#implementation 'org.apache.camel.springboot:camel-rest-starter:3.19.0'
+#implementation 'org.apache.camel.springboot:camel-core-starter:3.19.0'
+#implementation 'org.apache.camel.springboot:camel-jackson-starter:3.19.0'
+#implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.19.0'
+#implementation 'org.apache.camel.springboot:camel-spring-boot-bom:3.19.0'
+#implementation 'org.apache.camel.springboot:camel-spring-integration-starter:3.19.0'
+#implementation 'org.apache.camel.springboot:camel-jackson-starter:3.15.0'
+#implementation 'org.apache.camel.springboot:camel-http-starter:3.19.0'
+#implementation 'org.apache.camel.springboot:camel-jaxb-starter:3.19.0'
+#implementation 'org.apache.camel.springboot:camel-direct-starter:3.19.0'
+#implementation 'org.apache.camel.springboot:camel-undertow-starter:3.19.0'
+#implementation 'org.apache.camel.springboot:camel-bean-validator:3.19.0'
+
+[bundles]
+springboot = [
+    "springBootDataRedis", "springBootAop", "springBootActuator", "springBootValidation"
+]
+camel = [
+    "camelSpringBootStarter", "camelServletStarter", "camelRestStarter", "camelCoreStarter",
+    "camelJacksonStarter", "camelKafkaStarter", "camelKafkaConnector", "camelOpenapiJavaStarter", #, "camelUndertowStarter",
+    "camelSagaStarter", "camelLraStarter", "camelServiceStarter" #, "camelHttpCommonStarter"
+    #"camelRestSwaggerStarter"#, "camelOpenapiJavaStarter"
+    #"camelSwaggerJavaStarter", "camelSpringdocStarter"#,
+]
+swagger = [
+    #"springfoxSwagger2"#, "springfoxOas"
+    #"springfoxSwaggerUi"
+    #"springdocOpenapiUi"
+]

@@ -1,0 +1,24 @@
+#Defines exposed endpoints and which route in dbproccall-routes.xml describes the routing logic
+endpoint:
+  app:
+    MyApp1:
+      base_path: /app1
+      endpoint:
+        ep1:
+          port: 8081
+          url: /testapp0
+          to_route: direct:app01
+        ep2:
+          port: 8081
+          url: /testapp1
+          to_route: direct:app03
+    MyApp2:
+      base_path: /app2
+      endpoint:
+        ep1:
+          port: 8081
+          url: /testapp0
+          to_route: direct:app01
+naver:
+  name: ddddzzzz
+  secretKey: asdasdda123123

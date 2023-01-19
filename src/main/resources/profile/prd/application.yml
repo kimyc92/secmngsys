@@ -1,0 +1,162 @@
+#################################################
+# Application                                   #
+#################################################
+server:
+  host: localhost
+  port: 8081
+  servlet.context-path: /
+  undertow:
+    threads.io: 8
+    threads.worker: 200
+  error:
+    path: /api/error
+#    include-exception: true
+#    include-binding-errors: always
+#    include-message: always
+#    include-stacktrace: always
+    whitelabel.enabled: false
+endpoint.enabled: true
+#spring.mvc.throw-exception-if-no-handler-found: true
+#spring.web.resources.add-mappings: false
+
+#################################################
+# Swagger                                       #
+#################################################
+swagger:
+  enabled: true
+  api:
+    title: "Secmngsys.KR Camel Rest APIs"
+    version: 1.0.0
+    description: "보안 통합관리 시스템 Rest API 명세서 입니다."
+    contact:
+      name: "David Kim"
+      email: "kimyc@suhyup.co.kr"
+spring.mvc.pathmatch.matching-strategy: ant_path_matcher
+#springfox.documentation.swagger.v2.path: /api/api-doc #/openapi.yaml
+
+#springdoc:
+###  version: v1.0.0
+##  #packages-to-scan: com.example.swagger3test
+##  api-docs:
+##    enabled: true
+##    path: /api/api-doc
+##    groups.enabled: true
+#  swagger-ui:
+#    enabled: true
+#    config-url: /api/api-doc
+#    path: /swagger-ui/index.html
+##    url: /api/api-doc
+#    tags-sorter: alpha
+#    operations-sorter: alpha
+#  cache.disabled: true
+#  default-consumes-media-type: application/json;charset=UTF-8
+#  default-produces-media-type: application/json;charset=UTF-8
+
+#################################################
+# Apache Camel                                  #
+#################################################
+camel:
+  springboot:
+    name: ServicesRest
+    tracing-standby: true              # tracing: true
+    tracing-logging-format: "%-4.4s [%-10.50s] [%-30.30s]"
+    stream-caching-enabled: false
+    main-run-controller: true          # keep Camel running
+    #startup-summary-level: verbose    # verbose summary so you can see the pairing of routes and routes configurations
+    dump-routes: false                 # dump routes as XML (routes are coded in different DSLs but can be dumped as XML
+    #routes-include-pattern: classpath:swagger/* #,classpath:myerror/*,classpath:myinterceptor/*  which directory(s) to scan for routes/route-configurations which can be xml, yaml or java files
+    #duration-max-seconds: 60          # automatic shutdown after 60 seconds
+    route-controller-supervise-enabled: false
+    endpoint-bridge-error-handler: true
+#  service:
+#    lra:
+#      enabled: true
+#      coordinator-url: http://localhost:8081
+#      local-participant-url: http://localhost:8081/api
+  rest:
+    binding-mode: auto
+    component: servlet
+    enable-cors: true
+    cors-headers:
+      Access-Control-Allow-Headers: "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers"
+      Access-Control-Allow-Methods: "GET,PUT,POST,DELETE"
+      Access-Control-Allow-Origin: "*"
+      Access-Control-Max-Age: "3600"
+    bridge-error-handler: false
+    data-format-property:
+      prettyPrint: true
+    api-context-path: /api-doc
+    api-property:
+      schemes: http
+      host: ${server.host}:${server.port}
+      base.path: /api
+      #cors: true
+      api.title: ${swagger.api.title}
+      api.version: ${swagger.api.version}
+      api.description: ${swagger.api.description}
+      api.contact.name: ${swagger.api.contact.name}
+      api.contact.email: ${swagger.api.contact.email}
+  openapi.enabled: ${swagger.enabled}
+  servlet.mapping.context-path: /api/*
+  component:
+    servlet:
+      bridge-error-handler: true
+#  component:
+#    rest-swagger:
+#      #base-path: /swagger-ui/index.html
+#      specification-uri: /api/api-doc
+#  springdoc.enabled: true
+#  undertow.enabled: false
+#  idempotency:
+#    enabled: true                     # The Idempotent Consumer from the EIP patterns is used to filter out duplicate messages
+#    repository:
+#      type: kafka                     # The idempotent repository type to use, possible values are memory and kafka
+#    expression:
+#      type: body                      # How the idempotency will be evaluated: possible values are body and header
+#    kafka:
+#      topic:                          # The Memory dimension of the in memory idempotent Repository
+
+#################################################
+# Apache Kafka                                  #
+#################################################
+spring:
+  main:
+    web-application-type: servlet
+  kafka:
+    bootstrap-servers: localhost:9092
+    endpoint-offset: "file://C:\\myWork\\secmngsys\\logs\\camelKafkaConsumer\\files"
+    endpoint-prefix: "kafka:"
+    consumer:
+      # bootstrap-servers: 3.34.97.97:9092
+      # Consumer Group Id
+      group-id: "secmngsys"
+      # Set if KafkaConsumer will read from beginning or end on startup: SeekPolicy.BEGINNING: read from beginning. SeekPolicy.END: read from end.
+      # Enum values: beginning, end
+      #seek-to:
+      # Kafka 서버에 초기 offset이 없거나, 서버에 현재 offset이 더 이상 존재하지 않을 경우 수행할 작업을 설정
+      # latest: 가장 최근 에 생산된 메시지로 offeset reset
+      # earliest: 가장 오래된 메시지로 offeset reset
+      # none: offset 정보가 없으면 Exception 발생
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      allow-manual-commit: true
+      # 옵션이 true이면 소비자가 중단되고 오류를 일으킨 메시지의 오프셋을 다시 찾은 다음 이 메시지를 처리하려고 다시 시도합니다.
+      # 그러나 포이즌 메시지와 같이 매번 실패할 경우 동일한 메시지를 끝없이 처리할 수 있습니다.
+      break-on-firstError: true
+      max-poll-records: 3
+      # 데이터를 받아올 때, key/value를 역직렬화
+      # String 데이터 StringDeserializer, JSON 데이터를 받아올 것이라면 JsonDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      header-deserializer: java.com.secmngsys.global.configuration.camel.kafkaHeaderDeserializerCustom
+    producer:
+      # bootstrap-servers: 3.34.97.97:9092
+      acks: all
+      # JSON 데이터를 보낼 것이라면 JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    listener:
+      ack-mode: RECORD
+    template:
+      default-topic: quickstart-events
+      sms-topic: sms-events
