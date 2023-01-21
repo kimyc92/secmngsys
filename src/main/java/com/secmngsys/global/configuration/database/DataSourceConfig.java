@@ -91,7 +91,7 @@ public class DataSourceConfig {
 	public static DataSource createHikariDataSource(DatabaseTypeCode type, Environment env, String db) {
 		HikariDataSource dataSource = new HikariDataSource();
 		try {
-
+			System.out.println(AES256Util.decryptAES256(env.getProperty(db+".username"), key));
 			System.out.println(AES256Util.decryptAES256(env.getProperty(db+".password"), key));
 			dataSource.setJdbcUrl(env.getProperty(db+".jdbcUrl"));
 			dataSource.setDriverClassName(env.getProperty(db+".driverClassName"));
