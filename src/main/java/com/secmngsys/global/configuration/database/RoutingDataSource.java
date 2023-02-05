@@ -1,5 +1,8 @@
 package com.secmngsys.global.configuration.database;
 
+import com.secmngsys.domain.certification.dao.CertificationDao;
+import com.secmngsys.domain.certification.dao.CertificationDao2;
+import com.secmngsys.domain.user.dao.UserDao;
 import com.secmngsys.global.configuration.code.DatabaseTypeCode;
 import com.secmngsys.global.configuration.context.RoutingDatabaseContextHolder;
 import com.secmngsys.global.exception.RoutingDataSourceException;
@@ -12,8 +15,11 @@ import javax.sql.DataSource;
 @Slf4j
 public class RoutingDataSource extends AbstractRoutingDataSource {
 
-    @Autowired
     RoutingDatabaseConfig routingDatabaseConfig;
+
+    public void RoutingDataSource(RoutingDatabaseConfig routingDatabaseConfig) {
+        this.routingDatabaseConfig = routingDatabaseConfig;
+    }
 
 //    @Resource
 //    private Environment env;

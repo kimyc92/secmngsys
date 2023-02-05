@@ -167,7 +167,7 @@ public class UserRoute extends GlobalRouteBuilder { // RouteBuilder
         from("direct:kafka-test")
             .setBody(constant("Message from Camel"+formatter.format(today)))          // Message to send
           //  .setHeader(KafkaConstants.KEY, constant("Camel")) // Key of the message
-            .to("kafka:quickstart-events?brokers=localhost:9092")
+            .to("kafka:quickstart-events?brokers=localhost:29092")
                 .log("Message received from Kafka : ${body}")
                 .log("    on the topic ${headers[kafka.TOPIC]}")
                 .log("    on the partition ${headers[kafka.PARTITION]}")

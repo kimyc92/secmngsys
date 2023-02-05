@@ -1,6 +1,8 @@
 package com.secmngsys;
 
+import com.secmngsys.global.configuration.database.DataSourceProperties;
 import com.secmngsys.global.configuration.kafka.KafkaProperties;
+import com.secmngsys.global.configuration.redis.RedisProperties;
 import com.secmngsys.global.configuration.swagger.SwaggerProperties;
 import com.secmngsys.global.util.AES256Util;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +17,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import javax.annotation.Resource;
 
 @SpringBootApplication//(exclude = {ErrorMvcAutoConfiguration.class})
-@EnableConfigurationProperties({KafkaProperties.class, SwaggerProperties.class})
+@EnableConfigurationProperties({KafkaProperties.class, SwaggerProperties.class
+		, RedisProperties.class, DataSourceProperties.class})
 @Slf4j
 public class SecmngsysApplication {
 
@@ -24,7 +27,6 @@ public class SecmngsysApplication {
 			+ "classpath:profile/prd/application.yml,"
 			+ "classpath:profile/prd/datasource.yml,"
 			+ "classpath:profile/prd/endpoint.yml";
-
 
 	@Resource
 	private ApplicationArguments applicationArguments;  // CLI 인수

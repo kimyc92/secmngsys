@@ -1,6 +1,7 @@
 package com.secmngsys.global.configuration.database;
 
 import com.secmngsys.global.configuration.code.DatabaseTypeCode;
+import com.secmngsys.global.configuration.redis.RedisProperties;
 import com.secmngsys.global.exception.RoutingDataSourceException;
 import com.secmngsys.global.util.AES256Util;
 import com.zaxxer.hikari.HikariDataSource;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
+import java.util.Map;
 import java.util.Properties;
 
 @Slf4j
@@ -88,20 +90,29 @@ public class DataSourceConfig {
 //	}
 
 
-	public static DataSource createHikariDataSource(DatabaseTypeCode type, Environment env, String db) {
+	public static DataSource createHikariDataSource(DatabaseTypeCode type
+			, DataSourceProperties.DataSource ds, String db) {
 		HikariDataSource dataSource = new HikariDataSource();
+		DataSourceProperties.DataSource.DataSourceDef dsDef = ds.getDatasource();
 		try {
-			System.out.println(AES256Util.decryptAES256(env.getProperty(db+".username"), key));
-			System.out.println(AES256Util.decryptAES256(env.getProperty(db+".password"), key));
-			dataSource.setJdbcUrl(env.getProperty(db+".jdbcUrl"));
-			dataSource.setDriverClassName(env.getProperty(db+".driverClassName"));
-			dataSource.setUsername(AES256Util.decryptAES256(env.getProperty(db+".username"), key));
-			dataSource.setPassword(AES256Util.decryptAES256(env.getProperty(db+".password"), key));
-			dataSource.setMaximumPoolSize(20);
+//			System.out.println(AES256Util.decryptAES256(env.getProperty(db+".username"), key));
+//			System.out.println(AES256Util.decryptAES256(env.getProperty(db+".password"), key));
+//			dataSource.setJdbcUrl(env.getProperty(db+".jdbcUrl"));
+//			dataSource.setDriverClassName(env.getProperty(db+".driverClassName"));
+//			dataSource.setUsername(AES256Util.decryptAES256(env.getProperty(db+".username"), key));
+//			dataSource.setPassword(AES256Util.decryptAES256(env.getProperty(db+".password"), key));
+			dataSource.setJdbcUrl(dsDef.getJdbcUrl());
+			dataSource.setDriverClassName(dsDef.getDriverClassName());
+			dataSource.setUsername(AES256Util.decryptAES256(dsDef.getUsername(), key));
+			dataSource.setPassword(AES256Util.decryptAES256(dsDef.getPassword(), key));
+			dataSource.setValidationTimeout(Long.parseLong(dsDef.getValidationTimeout()));
+			dataSource.setMaximumPoolSize(Integer.parseInt(dsDef.getMaximumPoolSize()));
+			//dataSource.setConnectionInitSql("SELECT 1 FROM DUAL");
 			//dataSource.setAutoCommit(false);
 			//dataSource.setReadOnly(true);
 
 		} catch (NullPointerException e) {
+			e.printStackTrace();
 			log.error("[Custom DataSource] DB Environment is NULL !!");
 
 		} catch (Exception e) {

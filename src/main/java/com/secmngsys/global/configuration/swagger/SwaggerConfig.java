@@ -11,18 +11,20 @@ package com.secmngsys.global.configuration.swagger;
 //import springfox.documentation.spring.web.plugins.Docket;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 //@EnableSwagger2
 //@EnableWebMvc
+@Slf4j
 @Configuration
 public class SwaggerConfig extends WebMvcConfigurationSupport {
 //
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        System.out.println("asdasdadsdsadsdsd");
+        log.debug("SwaggerConfig.addResourceHandlers()");
         registry.addResourceHandler("/swagger-ui/**")
                 .addResourceLocations("classpath:/swagger/dist/");
     }

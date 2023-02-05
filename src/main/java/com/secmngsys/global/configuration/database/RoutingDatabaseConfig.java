@@ -39,6 +39,12 @@ public class RoutingDatabaseConfig { //implements DisposableBean {
     @Resource
     private Environment env;
 
+    protected DataSourceProperties dataSourceProperties;
+
+    public RoutingDatabaseConfig(DataSourceProperties dataSourceProperties) {
+        this.dataSourceProperties = dataSourceProperties;
+    }
+
     public static Map<Object, Object> dataSources = new HashMap<>();
 
     @Autowired
@@ -49,9 +55,9 @@ public class RoutingDatabaseConfig { //implements DisposableBean {
         AbstractRoutingDataSource routingDataSource = new RoutingDataSource();
 
         dataSources.put(DatabaseTypeCode.Master
-                , DataSourceConfig.createHikariDataSource(DatabaseTypeCode.Master, env, "prd.master.datasource"));
+                , DataSourceConfig.createHikariDataSource(DatabaseTypeCode.Master, dataSourceProperties.getMaster(), "prd.master.datasource"));
         dataSources.put(DatabaseTypeCode.Sms
-                , DataSourceConfig.createHikariDataSource(DatabaseTypeCode.Sms, env, "prd.sms.datasource"));
+                , DataSourceConfig.createHikariDataSource(DatabaseTypeCode.Sms, dataSourceProperties.getSms(), "prd.sms.datasource"));
         routingDataSource.setTargetDataSources(dataSources);
         routingDataSource.setDefaultTargetDataSource(dataSources.get(DatabaseTypeCode.Master));
         return routingDataSource;

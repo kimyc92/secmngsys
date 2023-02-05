@@ -6,6 +6,7 @@ import com.secmngsys.domain.certification.service.CertificationService;
 import com.secmngsys.domain.certification.service.CreditService;
 import com.secmngsys.domain.certification.service.OrderManagerService;
 import com.secmngsys.domain.user.model.dto.UserDto;
+import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.SagaPropagation;
@@ -33,9 +34,11 @@ public class CertificationSagaRoute extends RouteBuilder {
 
         from("direct:smsSendSaga")
                 .log(ERROR, "Id: ${header.id}, Order Received: ${body}")
+                .setHeader("id", simple(UUID.randomUUID().toString()))
+                .setHeader("base_url", header("CamelHttpUrl"))
+                .setHeader("base_method", header("CamelHttpMethod"))
                 .process(exchange ->
                     {
-                        exchange.getMessage().setHeader("id", UUID.randomUUID().toString());
                         UserDto userDto = exchange.getMessage().getBody(UserDto.class);
                         userDto.setId(exchange.getMessage().getHeader("id", String.class));
                         exchange.getMessage().setBody(userDto);
@@ -56,15 +59,21 @@ public class CertificationSagaRoute extends RouteBuilder {
                 .saga()
                 .propagation(SagaPropagation.MANDATORY)
                 .option("id", header("id"))
+                .option("base_url", header("base_url"))
+                .option("base_method", header("base_method"))
                 .option("body", body())
                 .log(ERROR, "Id: ${header.id}, User Received: ${body}")
                 .compensation("direct:cancelSmsSends")
+                //.transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
                 .bean(certificationService, "smsDbSends")
                 .log(INFO, "Id: ${header.id}, User Received: ${body}")
         ;
 
         from("direct:cancelSmsSends")
-                //.setHeader("kafkaExeUrl", "/")
+                //.transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
+                .setHeader("dest_url",
+                        constant("http://localhost:8081/api/v1/certification/cancel-sms-sends"))
+                .setHeader("dest_method", constant("delete"))
                 .transform(header("body")) // body 값을 같이 넘겨줌
                 //.log(ERROR, "cancelSmsSend Id: ${header.id}, User Received: ${body}")
                 .to("direct:kafka-sms-topic")

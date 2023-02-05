@@ -1,25 +1,33 @@
 package com.secmngsys.global.route;
 
+import com.secmngsys.global.configuration.code.KafkaLogFileTypeCode;
+import com.secmngsys.global.configuration.kafka.KafkaConfig;
 import com.secmngsys.global.configuration.kafka.KafkaProperties;
+import com.secmngsys.global.handler.KafkaHeaderFilterHandler;
+import com.secmngsys.global.process.KafkaConsumerLogFileProcess;
 import com.secmngsys.global.process.KafkaDeadLetterChannelProcess;
+import com.secmngsys.global.process.KafkaDumpDetailsProcess;
 import com.secmngsys.global.process.KafkaOffsetManagerProcessor;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.kafka.KafkaConfiguration;
 import org.apache.camel.component.kafka.KafkaConstants;
-import org.apache.camel.component.kafka.serde.KafkaHeaderSerializer;
 import org.apache.camel.spi.HeaderFilterStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.apache.camel.LoggingLevel.ERROR;
+import static org.apache.camel.LoggingLevel.INFO;
 
 @Slf4j
 @Component
+@ConditionalOnProperty(value = "mode.kafka", havingValue = "true", matchIfMissing = false)
 public class KafkaSmsConsumerRouteBuilder extends RouteBuilder { //extends GlobalRouteBuilder
 
     public static final String ROUTE_ID = "consumeFromKafka";
@@ -30,18 +38,15 @@ public class KafkaSmsConsumerRouteBuilder extends RouteBuilder { //extends Globa
     //@Qualifier("kafkaOffsetManager")
     private KafkaOffsetManagerProcessor kafkaOffsetManagerProcessor;
     private KafkaProperties kafkaProperties;
+    KafkaConfig kafkaConfig;
 
     public KafkaSmsConsumerRouteBuilder(KafkaOffsetManagerProcessor kafkaOffsetManagerProcessor
-            , KafkaProperties kafkaProperties){
+            , KafkaProperties kafkaProperties, KafkaConfig kafkaConfig){
         this.kafkaOffsetManagerProcessor = kafkaOffsetManagerProcessor;
         this.kafkaProperties = kafkaProperties;
+        this.kafkaConfig = kafkaConfig;
     }
 
-//    @Autowired
-//    private KafkaProperties kafkaProps;
-//
-//    @Autowired
-//    private FooBar fooBarService;
 
     @Override
     public void configure() {
@@ -51,58 +56,47 @@ public class KafkaSmsConsumerRouteBuilder extends RouteBuilder { //extends Globa
         errorHandler(deadLetterChannel("direct:dead")
                 .useOriginalMessage()
                 .maximumRedeliveries(3)
-                .redeliveryDelay(5000));
+                .redeliveryDelay(5000))
+        ;
 
         from("direct:dead")
                 .log(ERROR,"Sending Exception to MyErrorProcessor")
                 .bean(KafkaDeadLetterChannelProcess.class) // Exception 정보 포함해서 DLQ로 전송
-                .log("몬데이거 씨발")
-                .to("kafka:"+topic+"-dlt?brokers=localhost:9092")
-                ;
+                .to("kafka:"+topic+"-dlt?brokers=localhost:29092")
+        ;
 
-        String kafkaUrl = kafkaProperties.buildKafkaSmsUrl();
+        String kafkaUrl = kafkaConfig.buildKafkaSmsUrl();
         log.info("building camel route to consume from kafka: {}", kafkaUrl);
-
-        from(kafkaUrl)//+"&headerDeserializer=#kafkaHeaderDeserializerCustom")
+       // HeaderFilterStrategy headerFilterStrategy = getEndpoint().getHeaderFilterStrategy();
+        from(kafkaUrl)
                 .routeId(ROUTE_ID)
-                .process(exchange -> {
-                    log.info(this.dumpKafkaDetails(exchange));
-                })
+                .process(new KafkaDumpDetailsProcess())
                 .process(exchange -> {
                     // do something interesting
-//                    final HeaderFilterStrategy headerFilterStrategy = configuration.getHeaderFilterStrategy();
+
+
 //                    final String key = entry.getKey();
 //                    final Object value = entry.getValue();
-//
 //                    if (shouldBeFiltered(key, value, exchange, headerFilterStrategy)) {
 //                        final KafkaHeaderSerializer headerSerializer = configuration.getHeaderSerializer();
 //                        final byte[] headerValue = headerSerializer.serialize(key, value);
-//
 //                        if (headerValue == null) {
 //                            return null;
 //                        }
 //                        return new RecordHeader(key, headerValue);
 //                    }
-                    System.out.println("exchange-getHeaders   ->"+exchange.getIn().getHeaders());
-                    System.out.println("exchange-getBody      ->"+exchange.getIn().getBody());
-                    System.out.println("exchange-getMessageId ->"+exchange.getIn().getMessageId());
-                    System.out.println("exchange-getHeaders1   ->"+exchange.getMessage());
-                    System.out.println("exchange-getHeaders2   ->"+exchange.getIn().getHeader(KafkaConstants.HEADERS,"testtest"));
-                    System.out.println("---------------------------------------------------------------------");
-                    System.out.println("exchange-getHeaders2   ->"+exchange.getIn().getHeader(KafkaConstants.HEADERS,"myHeader"));
-                    System.out.println("exchange-getHeaders2   ->"+exchange.getIn().getHeader("myHeader"));
-                    System.out.println("exchange-getHeaders2   ->"+exchange.getIn().getHeader(KafkaConstants.KEY));
-                    System.out.println("exchange-getHeaders2   ->"+exchange.getIn().getMandatoryBody());
-                    System.out.println("exchange-getHeaders2   ->"+exchange.getProperties());
+                    HeaderFilterStrategy strategy = new KafkaHeaderFilterHandler();
+                    for (Map.Entry<String, Object> entry : exchange.getIn().getHeaders().entrySet()) {
+                        String headerValue = exchange.getIn().getHeader(entry.getKey(), String.class);
+                        System.out.println("[마이확인]-"+headerValue);
 
-                    //System.out.println("kafkaProperties.getEndpointOffset(): "+kafkaProperties.getEndpointOffset());
-                    /*
-                 .log("Message received from Kafka : ${body}")
-                .log("    on the topic ${headers[kafka.TOPIC]}")
-                .log("    on the partition ${headers[kafka.PARTITION]}")
-                .log("    with the offset ${headers[kafka.OFFSET]}")
-                .log("    with the key ${headers[kafka.KEY]}");
-                     */
+                        if (strategy != null && !strategy.applyFilterToCamelHeaders(entry.getKey(), headerValue, exchange)) {
+                            if (log.isTraceEnabled()) {
+                                log.trace("Adding header {} = {}", entry.getKey(), headerValue);
+                            }
+                           // builder.addHeader(entry.getKey(), headerValue);
+                        }
+                    }
                 })
                 .process(exchange -> {
                     // simple approach to generating errors
@@ -113,11 +107,8 @@ public class KafkaSmsConsumerRouteBuilder extends RouteBuilder { //extends Globa
                 })
                 .process(exchange -> {
                     // do something interesting
-                    System.out.println("hihihihi2222222222");
                 })
                 .process(exchange -> {
-                    System.out.println("Exchange.FILE_NAME - "+Exchange.FILE_NAME);
-                    System.out.println("UUID.randomUUID() - "+UUID.randomUUID());
                    // exchange.setProperty(Exchange.FILE_NAME, UUID.randomUUID() + ".txt");
                     Long test = (Long) exchange.getIn().getHeader(KafkaConstants.OFFSET);
 //                    if(test == 27) {
@@ -125,33 +116,11 @@ public class KafkaSmsConsumerRouteBuilder extends RouteBuilder { //extends Globa
 //                        throw new Exception();
 //                    }
                     log.error("테스트시점");
-                    //throw new Exception();
-
                 })
-                // manage the manual commit
-                .process(exchange -> {
-                    log.info("message is now> {}", exchange.getIn().getBody(String.class));
-                    //log.info("kafkaProperties.getEndpointOffset() ", kafkaProperties.getEndpointOffset());
-                    System.out.println("kafkaProperties.getEndpointOffset() - "+kafkaProperties.getEndpointOffset());
-                })
-                .to(kafkaProperties.getEndpointOffset())
+                .log(INFO, "message is now> {}", String.valueOf(body()))
+                .to("direct:createKafkaLogFile")
                 .process(kafkaOffsetManagerProcessor)
-                .log("end");
+        ;
     }
 
-    private String dumpKafkaDetails(Exchange exchange) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Message Received from topic:").append(exchange.getIn().getHeader(KafkaConstants.TOPIC));
-        sb.append("\r\n");
-        sb.append("Message Received from partition:").append(exchange.getIn().getHeader(KafkaConstants.PARTITION));
-        sb.append(" with partition key:").append(exchange.getIn().getHeader(KafkaConstants.PARTITION_KEY));
-        sb.append("\r\n");
-        sb.append("Message offset:").append(exchange.getIn().getHeader(KafkaConstants.OFFSET));
-        sb.append("\r\n");
-        sb.append("Message last record:").append(exchange.getIn().getHeader(KafkaConstants.LAST_RECORD_BEFORE_COMMIT));
-        sb.append("\r\n");
-        sb.append("Message Received:").append(exchange.getIn().getBody());
-        sb.append("\r\n");
-        return sb.toString();
-    }
 }

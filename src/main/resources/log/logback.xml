@@ -69,16 +69,16 @@
   <logger name="org.hibernate.type.descriptor.sql"     level="OFF" additivity="false" />
   <logger name="org.mybatis.spring"             level="INFO"  additivity="true" />
   <logger name="jdbc.sqlonly"                   level="INFO"  additivity="false" />
-  <logger name="jdbc.sqltiming"                 level="DEBUG" additivity="false" />
+  <logger name="jdbc.sqltiming"                 level="INFO" additivity="false" />
   <logger name="jdbc.audit"                     level="ERROR" additivity="false" />
-  <logger name="jdbc.resultset"                 level="ERROR" additivity="false" />
-  <logger name="jdbc.resultsettable"            level="DEBUG" additivity="true" />
+  <logger name="jdbc.resultset"                 level="INFO" additivity="false" />
+  <logger name="jdbc.resultsettable"            level="INFO" additivity="true" />
   <logger name="jdbc.connection"                level="ERROR" additivity="true" />
   <logger name="org.springframework"            level="WARN"  additivity="true" />
   <logger name="org.apache.camel.component.log" level="INFO"  additivity="true" />
   <logger name="org.apache.camel"               level="INFO"  additivity="true" />
   <logger name="org.apache.http"                level="INFO"  additivity="true" />
-  <logger name="org.apache.kafka"               level="WARN"  additivity="true" />
+  <logger name="org.apache.kafka"               level="ERROR"  additivity="true" />
   <logger name="org.apache.zookeeper"           level="WARN"  additivity="true" />
   <logger name="io.undertow"                    level="INFO"  additivity="true" />
   <logger name="kafka"                          level="WARN"  additivity="true" />
