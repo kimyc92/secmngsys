@@ -3,32 +3,43 @@ package com.secmngsys.domain.user.route;
 import com.secmngsys.domain.user.model.dto.UserDto;
 import com.secmngsys.domain.user.service.UserService;
 import com.secmngsys.global.configuration.camel.CamelConfig;
+import com.secmngsys.global.listener.CamelLogListener;
 import com.secmngsys.global.model.ResponseSuccess;
 import com.secmngsys.global.route.GlobalRouteBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.*;
+import org.apache.camel.spi.InterceptStrategy;
+import org.apache.camel.spi.Tracer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import static org.apache.camel.LoggingLevel.ERROR;
 import static org.apache.camel.LoggingLevel.INFO;
 
 @Slf4j
 @Component
 public class UserRoute extends GlobalRouteBuilder { // RouteBuilder
 
-    @Autowired
-    CamelContext camelContext;
+//    @Autowired
+//    CamelContext camelContext;
 
-    @Autowired
-    CamelConfig camelConfig;
+//    @Autowired
+//    CamelConfig camelConfig;
 
     @Override
     public void configure() throws Exception {
-        super.configure();
+        super.configure(false);
+        //camelContext.add
+        //camelContext.setLogMask(true);
+//        ExtendedCamelContext ecc = (ExtendedCamelContext) getCamelContext();
+//        ecc.addLogListener(new CamelLogListener());
+
+        //getContext().addLogListener(new MyLogListener());
 //        errorHandler(camelConfig.myErrorHandler());
 
         //intercept().log("gigigigigigi").to("log:hello");
@@ -102,7 +113,6 @@ public class UserRoute extends GlobalRouteBuilder { // RouteBuilder
 ////
 ////        // Kafka Consumer
 //        from("direct:kafka-my-consumer")
-//                .log("여기까진 옴?ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
 //                .to("kafka:quickstart-events?brokers=localhost:9092")
 //              //    + "&groupId=secmngsys")  // groupId
 //        //from("kafka:myTopic?brokers=localhost:9092")
@@ -146,7 +156,7 @@ public class UserRoute extends GlobalRouteBuilder { // RouteBuilder
 
         ;
 
-        from("direct:user-info").log(INFO, "Received body ${body}")
+        from("direct:user-info")
             //.unmarshal().json(JsonLibrary.Jackson, UserDto.class)
             .choice()
             .when(header(Exchange.CONTENT_TYPE).isEqualTo("application/json; version=1.0"))
@@ -156,7 +166,6 @@ public class UserRoute extends GlobalRouteBuilder { // RouteBuilder
                 .otherwise()
                 .bean(UserService.class, "selectOneUserInfo");
             // .marshal().json();
-
 
         Date today = new Date();
         Locale currentLocale = new Locale("KOREAN", "KOREA");

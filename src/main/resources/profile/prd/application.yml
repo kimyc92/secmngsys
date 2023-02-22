@@ -1,5 +1,12 @@
 #################################################
-# Application                                   #
+# Application Mode                              #
+#################################################
+mode:
+  kafka: true
+  redis: true
+
+#################################################
+# Application Basic                             #
 #################################################
 server:
   host: localhost
@@ -58,8 +65,9 @@ spring.mvc.pathmatch.matching-strategy: ant_path_matcher
 camel:
   springboot:
     name: ServicesRest
-    tracing-standby: true              # tracing: true
-    tracing-logging-format: "%-4.4s [%-10.50s] [%-30.30s]"
+    logMask: true                      # MaskingFormatter Value Masking
+    tracing-standby: true             # tracing: true
+    tracing-logging-format: "%-4.4s [%-30.30s] [%-50.50s]"
     stream-caching-enabled: false
     main-run-controller: true          # keep Camel running
     #startup-summary-level: verbose    # verbose summary so you can see the pairing of routes and routes configurations
@@ -123,8 +131,10 @@ spring:
   main:
     web-application-type: servlet
   kafka:
-    bootstrap-servers: localhost:9092
-    endpoint-offset: "file://C:\\myWork\\secmngsys\\logs\\camelKafkaConsumer\\files"
+    bootstrap-servers: localhost:29092
+    endpoint-consumer-offset-log-dir: "file:logs/consumer/"
+    endpoint-producer-offset-log-dir: "file:logs/producer/"
+    endpoint-log-file-permission: "700"
     endpoint-prefix: "kafka:"
     consumer:
       # bootstrap-servers: 3.34.97.97:9092

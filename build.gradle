@@ -53,13 +53,16 @@ dependencies {
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 	// Apache Camel
 	implementation(libs.bundles.camel)
-	//implementation 'org.apache.camel:camel-openapi-java:3.19.0'
+	implementation 'org.apache.camel.springboot:camel-cxf-rest-starter:3.19.0'
+	implementation 'org.apache.camel.springboot:camel-cxf-soap-starter:3.19.0'
+
 	implementation "io.springfox:springfox-swagger-ui:3.0.0"
 	// Apache Kafka
 	implementation 'org.springframework.kafka:spring-kafka:2.9.4'
 	// SpringFox Swagger
 	implementation(libs.bundles.swagger)
 	// Etc
+	implementation 'com.sun.xml.ws:jaxws-ri:4.0.1'
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 	implementation 'com.vdurmont:emoji-java:5.1.1'
 	compileOnly 'org.projectlombok:lombok'

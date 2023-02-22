@@ -1,11 +1,16 @@
-#spring.batch.job.names: ${job.name:none}
+#################################################
+# Logging                                       #
+#################################################
+logging:
+  config: classpath:log/logback.xml
+  batch:
+    job:
+      enabled: true # 어플리케이션 실행시 배치 자동 실행 여부
+      names: ${job.name:NONE}
 
-#spring.main.allow-bean-definition-overriding: true
-#spring:
-#  web:
-#    resources:
-#      static-locations: classpath:/swagger
-
+#################################################
+# Management                                    #
+#################################################
 management:
   server:
     port: 8082
@@ -20,47 +25,11 @@ management:
         include: "*" #health,info,env
         exclude: beans
   health:
-    diskspace:
-      enabled: true
-    db:
-      enabled: true
+    diskspace.enabled: true
+    db.enabled: true
+    defaults.enabled: true
 
-#management:
-#  server:
-#    port: 8082
-#  security:
-#    enabled: false
-#  health:
-#    db:
-#      enabled: true
-#    defaults:
-#      enabled: true
-#    diskspace:
-#      enabled: true
-#  endpoints:
-#    health:
-#      show-details: always
-#    web:
-#      base-path: /actuator
-#      exposure:
-#        include: "*" #health,info,env
-#        #exclude: beans
-
-logging:
-  config: classpath:log/logback.xml
-
-#spring:
-#  jta:
-#    log-dir: /logs
-  batch:
-    job:
-      enabled: true # 어플리케이션 실행시 배치 자동 실행 여부
-      names: ${job.name:NONE}
-
-#spring.batch.job.names: ${job.name:NONE}
-#spring:
-#  datasource:
-#    url: jdbc:log4jdbc:oracle:thin:@localhost:1521:accsys
-#    username: accsys
-#    password: admin123$
-#    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+#################################################
+# Etc                                           #
+#################################################
+#spring.main.allow-bean-definition-overriding: true

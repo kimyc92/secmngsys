@@ -30,8 +30,11 @@ camelOpenapiJavaStarter     = { module = "org.apache.camel.springboot:camel-open
 #camelSpringdocStarter       = { module = "org.apache.camel.springboot:camel-springdoc-starter",     version.ref = "camelVersion" }
 camelSagaStarter            = { module = "org.apache.camel.springboot:camel-saga-starter",          version.ref = "camelVersion" }
 camelLraStarter             = { module = "org.apache.camel.springboot:camel-lra-starter",           version.ref = "camelVersion" }
+camelCxfSoapStarter         = { module = "org.apache.camel.springboot:camel-cxf-soap-starter",      version.ref = "camelVersion" }
+camelCxfRestStarter         = { module = "org.apache.camel.springboot:camel-cxf-rest-starter",      version.ref = "camelVersion" }
 camelHttpCommonStarter      = { module = "org.apache.camel.springboot:camel-http-common-starter",   version = "3.12.0" }
 camelHttp4Starter           = { module = "org.apache.camel:camel-http4-starter",                    version = "2.25.4" }
+
 ##############
 # Swagger    #
 ##############
@@ -71,7 +74,8 @@ springboot = [
 camel = [
     "camelSpringBootStarter", "camelServletStarter", "camelRestStarter", "camelCoreStarter",
     "camelJacksonStarter", "camelKafkaStarter", "camelKafkaConnector", "camelOpenapiJavaStarter", #, "camelUndertowStarter",
-    "camelSagaStarter", "camelLraStarter", "camelServiceStarter" #, "camelHttpCommonStarter"
+    "camelSagaStarter", "camelLraStarter", "camelServiceStarter", "camelCxfSoapStarter", #, "camelHttpCommonStarter"
+    "camelCxfRestStarter"
     #"camelRestSwaggerStarter"#, "camelOpenapiJavaStarter"
     #"camelSwaggerJavaStarter", "camelSpringdocStarter"#,
 ]

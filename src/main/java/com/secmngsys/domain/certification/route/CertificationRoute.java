@@ -5,14 +5,17 @@ import com.secmngsys.domain.certification.service.CertificationService;
 import com.secmngsys.domain.user.model.dto.UserDto;
 import com.secmngsys.domain.user.service.UserService;
 import com.secmngsys.global.exception.camel.GlobalCamelException;
+import com.secmngsys.global.listener.CamelLogListener;
 import com.secmngsys.global.model.ResponseSuccess;
 import com.secmngsys.global.route.GlobalRouteBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
+import org.apache.camel.ExtendedCamelContext;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.SagaPropagation;
 import org.apache.camel.saga.InMemorySagaService;
+import org.apache.camel.spi.Tracer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +40,11 @@ public class CertificationRoute extends GlobalRouteBuilder {
     public void configure() throws Exception {
         super.configure();
 
+        //getCamelContext().setLogMask(true);
+//        ExtendedCamelContext ecc = (ExtendedCamelContext) getCamelContext();
+//        ecc.addLogListener(new CamelLogListener());
+        //getContext().getTracer().setEnabled(false);
+
         rest("/v1/certification").tag("Certification")
             .description("휴대폰 번호를 이용한 본인 인증 API")
             .consumes("application/json").produces("application/json")
@@ -56,6 +64,26 @@ public class CertificationRoute extends GlobalRouteBuilder {
                 .endParam()
                 .type(CertificationDto.class).outType(ResponseSuccess.class)
                 .to("bean:certificationService?method=cancelSmsSends");
+
+        rest("/v1/certification").tag("Certification")
+                .post("/user-info").routeId("asdasdaSD?")//throwExceptionOnFailure
+                .type(UserDto.class).outType(ResponseSuccess.class)
+                // .param().name("userDto").type(body).description("Get Sponge version request").endParam()
+                .to("direct:user-info2");
+
+        from("direct:user-info2")
+                //.unmarshal().json(JsonLibrary.Jackson, UserDto.class)
+//                .process(exchange -> {
+//                    getContext().getTracer().setEnabled(true);
+//                })
+                .choice()
+                .when(header(Exchange.CONTENT_TYPE).isEqualTo("application/json; version=1.0"))
+                .bean(UserService.class, "selectOneUserInfo")
+                .when(header(Exchange.CONTENT_TYPE).isEqualTo("application/json; version=1.1"))
+                .bean(UserService.class, "selectOneUserInfo2")
+                .otherwise()
+                .bean(UserService.class, "selectOneUserInfo");
+        // .marshal().json();
 
 //
 //        from("direct:smsSends")

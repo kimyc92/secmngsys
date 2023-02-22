@@ -2,6 +2,7 @@ package com.secmngsys.global.configuration.context;
 
 import com.secmngsys.global.configuration.code.DatabaseTypeCode;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.util.Assert;
 
 @Slf4j
