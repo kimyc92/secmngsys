@@ -10,10 +10,15 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class UserVo {
 
+    private String sysCd;
     @NotBlank
     private String userId;
     @NotBlank
     private String userNm;
     @NotBlank
     private String userHpNo;
+    @NotBlank
+    private String companyNm;
+    @NotBlank
+    private String deptNm;
 }

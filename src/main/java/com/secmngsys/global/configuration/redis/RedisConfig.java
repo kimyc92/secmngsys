@@ -32,15 +32,17 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() throws Exception {
-        log.debug("redisConnectionFactory()");
+        log.info("redisConnectionFactory()");
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(redisProperties.getHost());
         redisStandaloneConfiguration.setPort(Integer.parseInt(redisProperties.getPort()));
         redisStandaloneConfiguration.setPassword(AES256Util.decryptAES256(redisProperties.getPassword(), key));
+        System.out.println(AES256Util.decryptAES256(redisProperties.getPassword(), key));
         //redisStandaloneConfiguration.setHostName(env.getProperty("prd.redis.lettuce.host"));
         //redisStandaloneConfiguration.setPort(Integer.parseInt(env.getProperty("prd.redis.lettuce.port")));
         //redisStandaloneConfiguration.setPassword(AES256Util.decryptAES256(env.getProperty("prd.redis.lettuce.password"), key));
         LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration);
+        //System.out.println(lettuceConnectionFactory.getConnection());
         return lettuceConnectionFactory;
     }
 

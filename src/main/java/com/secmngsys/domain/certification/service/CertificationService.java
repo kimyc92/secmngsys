@@ -8,7 +8,6 @@ import com.secmngsys.domain.user.model.dto.UserDto;
 import com.secmngsys.global.configuration.code.SuccessCode;
 import com.secmngsys.global.exception.InvalidValueException;
 import com.secmngsys.global.handler.GlobalResponseHandler;
-import com.secmngsys.global.model.ResponseError;
 import com.secmngsys.global.model.ResponseSuccess;
 import com.secmngsys.global.util.GenerateCertNumberUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,20 +19,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -98,11 +88,12 @@ public class CertificationService {
         certificationDao.insertSmsDbSendsInfo(certificationDto);
     }
 
-    public void smsConfirms(CertificationDto certificationDto) {
+    public ResponseSuccess smsConfirms(CertificationDto certificationDto) {
         if (isVerify(certificationDto)) {
-            throw new InvalidValueException("인증번호가 일치하지 않습니다.");
+            throw new InvalidValueException("인증번호가 일치하지 않거나 유효시간이 지났습니다.");
         }
         certificationDao.removeSmsCertification(certificationDto.getCertificationNumber());
+        return GlobalResponseHandler.of(SuccessCode.SUCCESS);
     }
 
     private boolean isVerify(CertificationDto certificationDto) {

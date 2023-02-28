@@ -100,7 +100,7 @@
   <logger name="org.hibernate.type.BasicTypeRegistry"   level="OFF"   additivity="false" />
   <logger name="org.hibernate.type.descriptor.sql"      level="OFF"   additivity="false" />
   <logger name="org.mybatis.spring"                     level="INFO"  additivity="true" />
-  <logger name="jdbc.sqlonly"                           level="INFO"  additivity="false" />
+  <logger name="jdbc.sqlonly"                           level="INFO"  additivity="true" />
   <logger name="jdbc.sqltiming"                         level="INFO"  additivity="false" />
   <logger name="jdbc.audit"                             level="ERROR" additivity="false" />
   <logger name="jdbc.resultset"                         level="INFO"  additivity="false" />
@@ -117,7 +117,7 @@
       <appender-ref ref="ACCESS" />
   </logger>
 
-  <root level="DEBUG">
+  <root level="INFO">
       <appender-ref ref="STDOUT" />
       <appender-ref ref="FILE" />
       <appender-ref ref="ERROR" />

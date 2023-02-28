@@ -71,12 +71,14 @@ public class CertificationSagaRoute extends RouteBuilder {
 
         from("direct:cancelSmsSends")
                 //.transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
+                .log(ERROR, "cancelSmsSends")
+                /*
                 .setHeader("dest_url",
                         constant("http://localhost:8081/api/v1/certification/cancel-sms-sends"))
                 .setHeader("dest_method", constant("delete"))
                 .transform(header("body")) // body 값을 같이 넘겨줌
-                //.log(ERROR, "cancelSmsSend Id: ${header.id}, User Received: ${body}")
                 .to("direct:kafka-sms-topic")
+                 */
         ;
     }
 }

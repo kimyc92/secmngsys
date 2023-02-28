@@ -19,7 +19,7 @@ public class GenericCamalSucessCustomException {
      */
     protected void handleCamelException(Throwable cause, Exchange exchange){
         log.error("handleCamelException", String.valueOf(cause));
-        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(cause));
+        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(cause.getMessage()));
         exchange.getMessage().setBody(new ResponseEntity<>(response, HttpStatus.BAD_REQUEST).getBody());
         exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, HttpStatus.BAD_REQUEST.value());
     }
@@ -28,8 +28,8 @@ public class GenericCamalSucessCustomException {
      * 그 외 모든 Exception 예외 상황시 발생, 500 status code와 함께 반환
      */
     protected void handleException(Throwable cause, Exchange exchange){
-        log.error("handleException(", String.valueOf(cause));
-        final ResponseError response = ResponseError.of(ErrorCode.INTERNAL_SERVER_ERROR, String.valueOf(cause));
+        log.error("handleException()", String.valueOf(cause));
+        final ResponseError response = ResponseError.of(ErrorCode.INTERNAL_SERVER_ERROR, String.valueOf(cause.getMessage()));
         exchange.getMessage().setBody(new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR).getBody());
         exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.value());
     }

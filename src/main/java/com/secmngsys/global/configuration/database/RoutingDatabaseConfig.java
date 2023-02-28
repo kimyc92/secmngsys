@@ -28,6 +28,7 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -55,9 +56,14 @@ public class RoutingDatabaseConfig { //implements DisposableBean {
         AbstractRoutingDataSource routingDataSource = new RoutingDataSource();
 
         dataSources.put(DatabaseTypeCode.Master
-                , DataSourceConfig.createHikariDataSource(DatabaseTypeCode.Master, dataSourceProperties.getMaster(), "prd.master.datasource"));
+                , DataSourceConfig.createHikariDataSource(DatabaseTypeCode.Master
+                        , dataSourceProperties.getMaster(), "prd.master.datasource"));
         dataSources.put(DatabaseTypeCode.Sms
-                , DataSourceConfig.createHikariDataSource(DatabaseTypeCode.Sms, dataSourceProperties.getSms(), "prd.sms.datasource"));
+                , DataSourceConfig.createHikariDataSource(DatabaseTypeCode.Sms
+                        , dataSourceProperties.getSms(), "prd.sms.datasource"));
+        dataSources.put(DatabaseTypeCode.Drm
+                , DataSourceConfig.createHikariDataSource(DatabaseTypeCode.Drm
+                        , dataSourceProperties.getDrm(), "prd.drm.datasource"));
         routingDataSource.setTargetDataSources(dataSources);
         routingDataSource.setDefaultTargetDataSource(dataSources.get(DatabaseTypeCode.Master));
         return routingDataSource;

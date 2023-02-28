@@ -1,7 +1,5 @@
 package com.secmngsys.global.listener;
 
-import com.secmngsys.global.dao.LoggingDao;
-import com.secmngsys.global.service.LoggingService;
 import com.secmngsys.global.util.HttpClientInfoUtil;
 import lombok.Data;
 import lombok.Getter;
@@ -33,8 +31,8 @@ public class CamelLogListener implements LogListener {
                  , exchange.getIn().getHeader("CamelHttpUrl")
                  , message);
 
-        LoggingService loggingService = new LoggingService();
-        loggingService.insertLoggingInfo(ip, camelLog);
+        // LoggingService loggingService = new LoggingService();
+        // loggingService.insertLoggingInfo(ip, camelLog);
         return camelLog;
     }
 

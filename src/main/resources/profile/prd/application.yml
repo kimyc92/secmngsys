@@ -2,7 +2,7 @@
 # Application Mode                              #
 #################################################
 mode:
-  kafka: true
+  kafka: false
   redis: true
 
 #################################################
@@ -76,7 +76,10 @@ camel:
     #duration-max-seconds: 60          # automatic shutdown after 60 seconds
     route-controller-supervise-enabled: false
     endpoint-bridge-error-handler: true
-#  service:
+  dataformat:
+    jackson:
+      auto-discover-object-mapper: true
+  #  service:
 #    lra:
 #      enabled: true
 #      coordinator-url: http://localhost:8081
@@ -87,7 +90,7 @@ camel:
     enable-cors: true
     cors-headers:
       Access-Control-Allow-Headers: "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers"
-      Access-Control-Allow-Methods: "GET,PUT,POST,DELETE"
+      Access-Control-Allow-Methods: "GET,PUT,POST,DELETE,PATCH"
       Access-Control-Allow-Origin: "*"
       Access-Control-Max-Age: "3600"
     bridge-error-handler: false

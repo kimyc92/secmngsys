@@ -2,24 +2,17 @@ package com.secmngsys.domain.user.route;
 
 import com.secmngsys.domain.user.model.dto.UserDto;
 import com.secmngsys.domain.user.service.UserService;
-import com.secmngsys.global.configuration.camel.CamelConfig;
-import com.secmngsys.global.listener.CamelLogListener;
 import com.secmngsys.global.model.ResponseSuccess;
 import com.secmngsys.global.route.GlobalRouteBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.camel.*;
-import org.apache.camel.spi.InterceptStrategy;
-import org.apache.camel.spi.Tracer;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.camel.Exchange;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import static org.apache.camel.LoggingLevel.ERROR;
-import static org.apache.camel.LoggingLevel.INFO;
+import static org.apache.camel.model.rest.RestParamType.body;
 
 @Slf4j
 @Component
@@ -31,9 +24,15 @@ public class UserRoute extends GlobalRouteBuilder { // RouteBuilder
 //    @Autowired
 //    CamelConfig camelConfig;
 
+    private final UserService userService;
+
+    public UserRoute(UserService userService) {
+        this.userService = userService;
+    }
+
     @Override
     public void configure() throws Exception {
-        super.configure(false);
+        super.configure();
         //camelContext.add
         //camelContext.setLogMask(true);
 //        ExtendedCamelContext ecc = (ExtendedCamelContext) getCamelContext();
@@ -132,15 +131,34 @@ public class UserRoute extends GlobalRouteBuilder { // RouteBuilder
 //                .process(exchange -> )
                 ;
 
-        rest("/v1/user").tag("/user").consumes("application/json").produces("application/json")
-             //   .bindingMode(RestBindingMode.json)
-                .description("User456 API")
-                .post("/user-info").routeId("/v1/user")//throwExceptionOnFailure
+        rest("/v1/user").tag("/user")
+                .description("사용자 정보를 위한 API")
+                .consumes("application/json").produces("application/json")
+                .post("/user-confirm").routeId("V1-USER-001")
+                    .description("사용자의 정보를 확인합니다.")
+                    .param()
+                        .name("UserDto").type(body).required(true).description("사용자 정보를 확인하는 Param")
+                    .endParam()
+                    .type(UserDto.class).outType(ResponseSuccess.class)
+                    .to("bean:userService?method=selectOneUserInfo")
+                .post("/user-info").routeId("V1-USER-002")//throwExceptionOnFailure
+                    .description("사용자의 정보를 조회합니다.")
+                    .param()
+                        .name("UserDto").type(body).required(true).description("사용자 정보를 조회하는 Param")
+                    .endParam()
                     .type(UserDto.class).outType(ResponseSuccess.class)
                     // .param().name("userDto").type(body).description("Get Sponge version request").endParam()
                     .to("direct:user-info")
+                .patch("/user-info").routeId("V1-USER-003")
+                    .description("사용자의 정보를 변경합니다.")
+                    .param()
+                        .name("UserDto").type(body).required(true).description("사용자 정보를 변경하는 Param")
+                    .endParam()
+                    .type(UserDto.class).outType(ResponseSuccess.class)
+                    .to("bean:userService?method=userInfoChange")
                 .post("/kafkatest")
                     .to("direct:kafka-test")
+
 
                 ;
 

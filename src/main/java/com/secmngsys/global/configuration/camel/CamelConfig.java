@@ -41,7 +41,7 @@ public class CamelConfig {
         //camelContext.getGlobalOptions().put(Exchange.LOG_EIP_NAME, "com.foo.myapp");
         //camelContext.getGlobalOptions().put(Exchange.LOG_DEBUG_BODY_STREAMS, "true"); // stream log enabled
         ExtendedCamelContext ecc = (ExtendedCamelContext) camelContext;
-        ecc.addLogListener(new CamelLogListener());
+        //ecc.addLogListener(new CamelLogListener());
     }
 
     @Bean

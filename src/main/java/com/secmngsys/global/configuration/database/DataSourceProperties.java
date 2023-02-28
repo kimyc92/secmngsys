@@ -19,6 +19,7 @@ public class DataSourceProperties {
 
     private final DataSource master;
     private final DataSource sms;
+    private final DataSource drm;
 
     @Setter
     @Getter

@@ -20,19 +20,21 @@ public class GlobalCamelException {
     private String lastBody;
     private Throwable lastException;
 
-    GenericCamalErrorCustomException errorException;
-    GenericCamalSucessCustomException sucessException;
+    private GenericCamalErrorCustomException errorException
+            = new GenericCamalErrorCustomException();
+    private GenericCamalSucessCustomException sucessException
+            = new GenericCamalSucessCustomException();
 
     private CountDownLatch latchOne;
     private CountDownLatch latchTwo;
     private CountDownLatch latchThree;
 
-    @Autowired
-    public void GlobalCamelException(GenericCamalErrorCustomException errorException
-            ,GenericCamalSucessCustomException sucessException) {
-        this.errorException = errorException;
-        this.sucessException = sucessException;
-    }
+//    @Autowired
+//    public void GlobalCamelException(GenericCamalErrorCustomException errorException
+//            ,GenericCamalSucessCustomException sucessException) {
+//        this.errorException = errorException;
+//        this.sucessException = sucessException;
+//    }
 
     public ResponseError GlobalHttpErrorException(Exchange exchange) {
         HttpServletRequestImpl test2 = (HttpServletRequestImpl) exchange.getIn().getHeader("CamelHttpServletRequest");

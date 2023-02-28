@@ -20,7 +20,7 @@ public class GenericCamalErrorCustomException {
      */
     protected ResponseError handleCamelException(Throwable cause){
         log.error("handleCamelException : {}", cause);
-        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(cause));
+        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(cause.getMessage()));
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST).getBody();
     }
 
@@ -29,7 +29,7 @@ public class GenericCamalErrorCustomException {
      */
     protected ResponseError handleUnrecognizedPropertyException(Throwable cause) {
         log.error("handleUnrecognizedPropertyException : {}", cause);
-        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(cause));
+        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(cause.getMessage()));
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST).getBody();
     }
 
@@ -38,13 +38,13 @@ public class GenericCamalErrorCustomException {
      */
     protected ResponseError handleConstraintViolationException(Throwable cause) {
         log.error("handleConstraintViolationException : {}", cause);
-        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(cause));
+        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(cause.getMessage()));
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST).getBody();
     }
 
     public ResponseError handleHttpOperationFailedException(Throwable cause) {
         log.error("handleHttpOperationFailedException : {}", cause);
-        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(cause));
+        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(cause.getMessage()));
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST).getBody();
     }
 
@@ -62,7 +62,7 @@ public class GenericCamalErrorCustomException {
      */
     protected ResponseError handleException(Throwable cause){
         log.error("handleException : {}", cause);
-        final ResponseError response = ResponseError.of(ErrorCode.INTERNAL_SERVER_ERROR, String.valueOf(cause));
+        final ResponseError response = ResponseError.of(ErrorCode.INTERNAL_SERVER_ERROR, String.valueOf(cause.getMessage()));
         //exchange.getMessage().setBody(new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR).getBody());
         //exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR).getBody();

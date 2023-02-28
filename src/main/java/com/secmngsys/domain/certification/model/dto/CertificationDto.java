@@ -27,6 +27,9 @@ public class CertificationDto {
     private String smsSendDate;
     private String smsSendTime;
     private String smsSendSeq;
+    private String smsSendStatusCd;
+    private String smsSendStatusNm;
+
 
 
 }

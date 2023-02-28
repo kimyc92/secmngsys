@@ -49,28 +49,23 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
         try {
 
             if(DatabaseTypeCode == DatabaseTypeCode.Sms){
-
                 // 비어 있을 때만 현재 routingDatabaseInfo 값으로 Setting
                 if(!(contains(DatabaseTypeCode))){
-                    throw new RoutingDataSourceException("Target 데이터 베이스 정보가 비어 있습니다.");
-                    /*
-                    DataSource ds = createCustomDataSource(routingDatabaseInfo);
-                    add(DatabaseTypeCode.Target, ds);
-                    */
+                    throw new RoutingDataSourceException("SMS 데이터 베이스 정보가 비어 있습니다.");
                 }
-                log.debug("Target DB Dynamic Setting Completed");
+                log.info("SMS DB Dynamic Setting Completed");
                 return get(DatabaseTypeCode.Sms);
             }
 
             if(DatabaseTypeCode == DatabaseTypeCode.Drm){
                 if(!(contains(DatabaseTypeCode))){
-                    throw new RoutingDataSourceException("Source 데이터 베이스 정보가 비어 있습니다.");
+                    throw new RoutingDataSourceException("DRM 데이터 베이스 정보가 비어 있습니다.");
                     /*
                     DataSource ds = createCustomDataSource(routingDatabaseInfo);
                     add(DatabaseTypeCode.Source, ds);
                     */
                 }
-                log.debug("Source DB Dynamic Setting Completed");
+                log.info("Source DB Dynamic Setting Completed");
                 return get(DatabaseTypeCode.Drm);
             }
             // Default Database Config
@@ -83,9 +78,8 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected DatabaseTypeCode determineCurrentLookupKey() {
-        //System.out.println("RoutingDatabaseContextHolder.get() : "+ RoutingDatabaseContextHolder.get());
-        //System.out.println("상태값 - "+TransactionSynchronizationManager.isActualTransactionActive());
-        //System.out.println("RoutingDataSource.determineCurrentLookupKey()");
+        log.debug("RoutingDataSource.determineCurrentLookupKey()");
+        log.debug("RoutingDatabaseContextHolder.get() : ", RoutingDatabaseContextHolder.get());
         return RoutingDatabaseContextHolder.get();
     }
 

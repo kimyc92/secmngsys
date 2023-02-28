@@ -62,35 +62,19 @@ prd:
       validationTimeout: 250
       maxLifetime: 1750000
       mapUnderscoreToCamelCase: true
-#  source:
-#    repository:
-#      isolationlevelforcreate: ISOLATION_DEFAULT
-#    datasource:
-#      poolName: hikari-cp
-#      poolSize: 1
-#      maximumPoolSize: 1
-#      jdbcUrl: ${sourceJdbcUrl}
-#      username: ${sourceUsername}
-#      password: ${sourcePassword}
-#      driverClassName: ${sourceDriverClassName}
-#      autoCommit: true
-#      connectionTimeout: 30000
-#      validationTimeout: 250
-#      maxLifetime: 1750000
-#      mapUnderscoreToCamelCase: true
-#  target:
-#    repository:
-#      isolationlevelforcreate: ISOLATION_DEFAULT
-#    datasource:
-#      poolName: hikari-cp
-#      poolSize: 1
-#      maximumPoolSize: 1
-#      jdbcUrl: jdbc:log4jdbc:oracle:thin:@localhost:1623:target #${targetJdbcUrl}
-#      username: QNa84kbdlwDjfc7zC4dlxDsvLUZYLNgn8OzoBRyYlQbnpnlBRFqkO+2ErsLVwbZPjddkbg== #${targetUsername}
-#      password: aZbK3FrEse1QhMCWmM4zAzQeO4ZS2KGoNsmMo/gFRzaZFXjmGrIfaKbDn7UrPj31w2RwQg== #${targetPassword}
-#      driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy #${targetDriverClassName}
-#      autoCommit: true
-#      connectionTimeout: 30000
-#      validationTimeout: 250
-#      maxLifetime: 1750000
-#      mapUnderscoreToCamelCase: true
+  drm:
+    repository:
+      isolationlevelforcreate: ISOLATION_DEFAULT
+    datasource:
+      uniqueName: drm
+      poolSize: 5
+      maximumPoolSize: 20
+      jdbcUrl: jdbc:log4jdbc:mariadb://localhost:3306/secmngsys
+      username: CygGgGhonDavm1vIHBEa5LRaB21ptpXf2nhnp6aUcSQRvjgp0xG5y1Se8qM5Y2vKPsFk5A==
+      password: Q3TXHSnLCW/F+RefexpxVNMhEzQy3v+sN7v9Sci/Duq8SOZ/1L3Ig5ojOMe3Cex2imC7/Q==
+      driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      autoCommit: true
+      connectionTimeout: 30000
+      validationTimeout: 250
+      maxLifetime: 1750000
+      mapUnderscoreToCamelCase: true

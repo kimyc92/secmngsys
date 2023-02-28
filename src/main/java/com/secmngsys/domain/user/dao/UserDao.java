@@ -6,10 +6,8 @@ import com.secmngsys.domain.user.model.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -19,15 +17,34 @@ public class UserDao {
     @Resource(name="routeSqlSessionTemplate")
     SqlSessionTemplate sqlSession;
 
-    public List<UserVo> selectOneUserInfo(UserDto userDto) {
-        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-        List<UserVo> userVo = mapper.selectUserInfo(userDto);
-        return userVo;
-    }
 
     public List<UserVo> selectUserInfo(UserDto userDto) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         List<UserVo> userVo = mapper.selectUserInfo(userDto);
         return userVo;
     }
+
+    public List<UserVo> selectOneUserInfo(UserDto userDto) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        List<UserVo> userVo = mapper.selectUserInfo(userDto);
+        return userVo;
+    }
+
+    public List<UserVo> selectDrmDbOneUserInfo(UserDto userDto) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        List<UserVo> userVo = mapper.selectDrmDbOneUserInfo(userDto);
+//        if(userVo.isEmpty()) {
+//            throw new RuntimeException("결과 값이 없습니다.");
+//            //throw new GenericSuccessCustomException("결과 값이 없습니다.", SuccessCode.NO_CONTENT);
+//        }
+
+        return userVo;
+    }
+
+    public void updateDrmDbUserInfo(UserDto userDto) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        mapper.updateDrmDbUserInfo(userDto);
+    }
+
+
 }

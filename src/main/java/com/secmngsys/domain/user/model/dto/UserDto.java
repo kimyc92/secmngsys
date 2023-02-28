@@ -12,11 +12,14 @@ import javax.validation.constraints.NotBlank;
 public class UserDto {
 
     private String Id;
+    @NotBlank(message = "시스템 코드")
+    private String sysCd;
     @NotBlank
     private String userId;
-    @NotBlank
+
     private String userNm;
-    @NotBlank // @Valid시 표시될 메세지 설정 가능 (message = "메세지")
+
     private String userHpNo;
 
+    private String password;
 }

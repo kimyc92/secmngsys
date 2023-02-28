@@ -11,8 +11,7 @@ public class RoutingDatabaseContextHolder {
     private static final ThreadLocal<DatabaseTypeCode> contextHolder = new ThreadLocal<>();
 
     public static void set(DatabaseTypeCode databaseTypeCode) {
-        System.out.println("셋팅!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        log.info("RoutingDatabaseContextHolder Set DB - "+databaseTypeCode);
+        log.debug("RoutingDatabaseContextHolder Set DB - "+databaseTypeCode);
         Assert.notNull(databaseTypeCode, "RoutingDatabase cannot be null");
         contextHolder.set(databaseTypeCode);
     }

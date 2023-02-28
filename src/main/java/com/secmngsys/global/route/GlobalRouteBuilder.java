@@ -2,8 +2,6 @@ package com.secmngsys.global.route;
 
 import com.secmngsys.global.configuration.swagger.SwaggerProperties;
 import com.secmngsys.global.exception.camel.GlobalCamelException;
-import com.secmngsys.global.process.GlobalHttpLoggingProcess;
-import com.secmngsys.global.service.LoggingService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Configuration;

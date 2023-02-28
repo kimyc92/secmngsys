@@ -12,7 +12,6 @@ public class GenericSuccessCustomException extends RuntimeException {
     public GenericSuccessCustomException(String message, SuccessCode successCode) {
         super(message);
         this.successCode = successCode;
-        System.out.println("SucessException 들어옴");
     }
 
 }

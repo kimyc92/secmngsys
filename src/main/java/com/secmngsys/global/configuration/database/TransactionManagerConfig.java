@@ -50,12 +50,9 @@ public class TransactionManagerConfig {
 //    }
 //
 //
-
     @Bean//("transactionManager")
     public PlatformTransactionManager transactionManager(
             @Qualifier(value = "lazyRoutingDataSource") DataSource lazyRoutingDataSource) throws SQLException {
-//        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!lazyRoutingDataSource - "
-//                +lazyRoutingDataSource.getConnection().getMetaData().getDriverName());
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
         transactionManager.setDataSource(lazyRoutingDataSource);
         return new DataSourceTransactionManager(lazyRoutingDataSource);
