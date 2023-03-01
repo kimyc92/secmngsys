@@ -1,5 +1,7 @@
 ### My Project Git Ignore ###
-datasource.yml
+**/profile/dev/*.yml
+**/profile/prd/*.yml
+!**/profile/sample/*.yml
 logs
 .idea
 
