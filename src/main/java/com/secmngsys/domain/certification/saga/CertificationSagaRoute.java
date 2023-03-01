@@ -1,13 +1,7 @@
 package com.secmngsys.domain.certification.saga;
 
-import com.secmngsys.domain.certification.model.dto.CertificationDto;
-import com.secmngsys.domain.certification.model.dto.OrderDto;
 import com.secmngsys.domain.certification.service.CertificationService;
-import com.secmngsys.domain.certification.service.CreditService;
-import com.secmngsys.domain.certification.service.OrderManagerService;
 import com.secmngsys.domain.user.model.dto.UserDto;
-import org.apache.camel.Exchange;
-import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.SagaPropagation;
 import org.apache.camel.saga.InMemorySagaService;
@@ -64,14 +58,17 @@ public class CertificationSagaRoute extends RouteBuilder {
                 .option("body", body())
                 .log(ERROR, "Id: ${header.id}, User Received: ${body}")
                 .compensation("direct:cancelSmsSends")
+                .completion("direct:completeSmsSends")
                 //.transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
                 .bean(certificationService, "smsDbSends")
                 .log(INFO, "Id: ${header.id}, User Received: ${body}")
+
         ;
 
         from("direct:cancelSmsSends")
                 //.transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
                 .log(ERROR, "cancelSmsSends")
+                .transform(header("body")) // body 값을 같이 넘겨줌
                 /*
                 .setHeader("dest_url",
                         constant("http://localhost:8081/api/v1/certification/cancel-sms-sends"))
@@ -79,6 +76,13 @@ public class CertificationSagaRoute extends RouteBuilder {
                 .transform(header("body")) // body 값을 같이 넘겨줌
                 .to("direct:kafka-sms-topic")
                  */
+                .bean(certificationService, "cancelSmsSends")
+        ;
+
+        from("direct:completeSmsSends")
+                .log(INFO, "completeSmsSends")
+                .transform(header("body")) // body 값을 같이 넘겨줌
+                .bean(certificationService, "completeSmsSends")
         ;
     }
 }

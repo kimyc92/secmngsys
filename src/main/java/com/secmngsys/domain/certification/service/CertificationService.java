@@ -72,16 +72,28 @@ public class CertificationService {
 //            throw new InvalidValueException("일부로 에러를 냈습니당.");
        // return GlobalResponseHandler.of(SuccessCode.SUCCESS);
     }
-    public ResponseSuccess cancelSmsSends(@Valid CertificationDto certificationDto) {
-        certificationDao.deleteSmsSendsInfo(certificationDto);
-        return GlobalResponseHandler.of(SuccessCode.SUCCESS);
+    public void cancelSmsSends(@Valid CertificationDto certificationDto) {
+        certificationDto.setSmsSendStatusCd("E");
+        certificationDto.setSmsSendStatusNm("ERROR");
+        certificationDao.updateSmsSendsInfo(certificationDto);
+        //return GlobalResponseHandler.of(SuccessCode.SUCCESS);
     }
 
     public ResponseSuccess smsDbSends(@Valid CertificationDto certificationDto) {
         certificationDao.insertSmsDbSendsInfo(certificationDto);
-//        if(1==1)
-//            throw new InvalidValueException("인증번호 생성오류");
+        if(1==1)
+            throw new InvalidValueException("인증번호 생성오류");
         return GlobalResponseHandler.of(SuccessCode.SUCCESS);
+    }
+
+    public void completeSmsSends(@Valid CertificationDto certificationDto){
+        certificationDto.setSmsSendStatusCd("Y");
+        certificationDto.setSmsSendStatusNm("COMPLETED");
+        certificationDao.updateSmsSendsInfo(certificationDto);
+        //return GlobalResponseHandler.of(SuccessCode.SUCCESS);
+    }
+    public void batchSmsSendsInfo(){
+        certificationDao.updateSmsSendsInfoCompensation();
     }
 
     public void smsTests(@Valid CertificationDto certificationDto) {

@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelException;
 import org.apache.camel.Exchange;
 import org.apache.camel.http.base.HttpOperationFailedException;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.validation.ConstraintViolationException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -71,7 +71,7 @@ public class GlobalCamelException {
             return errorException.handleHttpOperationFailedException(lastException);
 
         if(lastException instanceof ConstraintViolationException)
-            return errorException.handleConstraintViolationException(lastException);
+            return errorException.handleConstraintViolationException((ConstraintViolationException) lastException);
 
         if(lastException instanceof UnrecognizedPropertyException)
             return errorException.handleUnrecognizedPropertyException(lastException);

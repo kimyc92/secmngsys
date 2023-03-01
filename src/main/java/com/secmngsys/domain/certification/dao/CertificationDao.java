@@ -2,7 +2,6 @@ package com.secmngsys.domain.certification.dao;
 
 import com.secmngsys.domain.certification.mapper.CertificationMapper;
 import com.secmngsys.domain.certification.model.dto.CertificationDto;
-import com.secmngsys.domain.user.model.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -73,5 +72,15 @@ public class CertificationDao {
     public void deleteSmsSendsInfo(CertificationDto certificationDto) {
         CertificationMapper mapper = sqlSession.getMapper(CertificationMapper.class);
         mapper.deleteSmsSendsInfo(certificationDto);
+    }
+
+    public void updateSmsSendsInfo(CertificationDto certificationDto) {
+        CertificationMapper mapper = sqlSession.getMapper(CertificationMapper.class);
+        mapper.updateSmsSendsInfo(certificationDto);
+    }
+
+    public void updateSmsSendsInfoCompensation() {
+        CertificationMapper mapper = sqlSession.getMapper(CertificationMapper.class);
+        mapper.updateSmsSendsInfoCompensation();
     }
 }

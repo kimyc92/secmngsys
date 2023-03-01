@@ -1,14 +1,14 @@
 package com.secmngsys.global.exception.camel;
 
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.secmngsys.global.configuration.code.ErrorCode;
 import com.secmngsys.global.model.ResponseError;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.camel.Exchange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 
 @Slf4j
@@ -36,9 +36,17 @@ public class GenericCamalErrorCustomException {
     /**
      * Java Validation 검증시 발생하는 에러, 400 status code와 함께 반환
      */
-    protected ResponseError handleConstraintViolationException(Throwable cause) {
-        log.error("handleConstraintViolationException : {}", cause);
-        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(cause.getMessage()));
+    protected ResponseError handleConstraintViolationException(ConstraintViolationException ex) {
+        log.error("handleConstraintViolationException : {}", ex);
+        ConstraintViolation<?> violation = ex.getConstraintViolations().iterator().next();
+        // get the last node of the violation
+        /*
+        String field = null;
+        for (Path.Node node : violation.getPropertyPath()) {
+            field = node.getName();
+            //System.out.println(field);
+        } */
+        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(violation.getMessage()));
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST).getBody();
     }
 

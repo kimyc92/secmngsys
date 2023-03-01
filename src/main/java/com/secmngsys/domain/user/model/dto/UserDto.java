@@ -1,6 +1,10 @@
 package com.secmngsys.domain.user.model.dto;
 
-import lombok.*;
+import com.secmngsys.global.constraint.Password;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
@@ -21,5 +25,6 @@ public class UserDto {
 
     private String userHpNo;
 
+    @Password
     private String password;
 }

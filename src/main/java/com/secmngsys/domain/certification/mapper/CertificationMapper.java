@@ -2,7 +2,6 @@ package com.secmngsys.domain.certification.mapper;
 
 import com.secmngsys.domain.certification.model.dto.CertificationDto;
 import com.secmngsys.domain.certification.sql.CertificationSql;
-import com.secmngsys.domain.user.model.dto.UserDto;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
@@ -19,6 +18,12 @@ public interface CertificationMapper {
 
     @DeleteProvider(type = CertificationSql.class, method = "deleteSmsSendsinfo")
     void deleteSmsSendsInfo(@Param("certificationDto") CertificationDto certificationDto);
+
+    @UpdateProvider(type = CertificationSql.class, method = "updateSmsSendsInfo")
+    void updateSmsSendsInfo(@Param("certificationDto") CertificationDto certificationDto);
+
+    @UpdateProvider(type = CertificationSql.class, method = "updateSmsSendsInfoCompensation")
+    void updateSmsSendsInfoCompensation();
 
 
 //    @SelectProvider(type = UserSql.class, method = "selectUserInfo")
