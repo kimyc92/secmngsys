@@ -53,9 +53,6 @@ dependencies {
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 	// Apache Camel
 	implementation(libs.bundles.camel)
-	implementation 'org.apache.camel.springboot:camel-cxf-rest-starter:3.19.0'
-	implementation 'org.apache.camel.springboot:camel-cxf-soap-starter:3.19.0'
-
 	implementation "io.springfox:springfox-swagger-ui:3.0.0"
 	// Apache Kafka
 	implementation 'org.springframework.kafka:spring-kafka:2.9.4'
