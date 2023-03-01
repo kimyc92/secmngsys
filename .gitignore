@@ -1,11 +1,7 @@
 ### My Project Git Ignore ###
 datasource.yml
 logs
-
-
-
-
-
+.idea
 
 # IntelliJ project files
 # Created by https://www.toptal.com/developers/gitignore/api/intellij
