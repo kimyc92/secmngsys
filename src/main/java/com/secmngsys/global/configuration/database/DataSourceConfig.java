@@ -1,23 +1,16 @@
 package com.secmngsys.global.configuration.database;
 
 import com.secmngsys.global.configuration.code.DatabaseTypeCode;
-import com.secmngsys.global.configuration.redis.RedisProperties;
-import com.secmngsys.global.exception.RoutingDataSourceException;
 import com.secmngsys.global.util.AES256Util;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
-import java.util.Map;
-import java.util.Properties;
 
 @Slf4j
 @Configuration
 public class DataSourceConfig {
-
-	private static final String key = "my_key";
 
 	/*
 	public static PoolingDataSource createBitronixDataSource(DatabaseTypeCode type, Environment env, String db) {
@@ -91,10 +84,13 @@ public class DataSourceConfig {
 
 
 	public static DataSource createHikariDataSource(DatabaseTypeCode type
-			, DataSourceProperties.DataSource ds, String db) {
+			, DataSourceProperties.DataSource ds, String db) throws Exception {
 		HikariDataSource dataSource = new HikariDataSource();
 		DataSourceProperties.DataSource.DataSourceDef dsDef = ds.getDatasource();
+		String key = new AES256Util().getKey();
 		try {
+
+
 //			System.out.println(AES256Util.decryptAES256(env.getProperty(db+".username"), key));
 //			System.out.println(AES256Util.decryptAES256(env.getProperty(db+".password"), key));
 //			dataSource.setJdbcUrl(env.getProperty(db+".jdbcUrl"));

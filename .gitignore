@@ -1,7 +1,7 @@
 ### My Project Git Ignore ###
-**/profile/dev/*.yml
-**/profile/prd/*.yml
-!**/profile/sample/*.yml
+**/profile/dev/*
+**/profile/prd/*
+!**/profile/sample/*
 logs
 .idea
 

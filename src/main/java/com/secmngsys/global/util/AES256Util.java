@@ -1,21 +1,29 @@
 package com.secmngsys.global.util;
 
-import java.nio.ByteBuffer;
-import java.security.AlgorithmParameters;
-import java.security.SecureRandom;
-import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.AlgorithmParameters;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 /*
  * AES256 API
  */
 public class AES256Util {
-	
+
+    protected final String key = "sec_key";
+
+    public AES256Util(){
+    }
+
     public AES256Util(String key, String plainText) {
 		//String plainText = "";
 		//String key = "";
@@ -28,7 +36,12 @@ public class AES256Util {
 			e.printStackTrace();
 		}
     }
-    
+
+    public String getKey() throws Exception {
+        String content = Files.readString(Paths.get("src/main/resources/profile/prd/key.txt"), StandardCharsets.UTF_8);
+        return decryptAES256(content, key);
+    }
+
     public static String encryptAES256(String msg, String key) throws Exception {
 
         SecureRandom random = new SecureRandom();
