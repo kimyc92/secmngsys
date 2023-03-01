@@ -20,5 +20,5 @@ endpoint:
           url: /testapp0
           to_route: direct:app01
 naver:
-  name: ddddzzzz
-  secretKey: asdasdda123123
+  name: test1
+  secretKey: test2
