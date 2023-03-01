@@ -6,9 +6,9 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-application.yml
-datasource.yml
-endpoint.yml
+*application.yml
+*datasource.yml
+*endpoint.yml
 
 # IntelliJ project files
 .idea
