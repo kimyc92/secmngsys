@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
+
 @Slf4j
 @Configuration
 public class DataSourceConfig {
@@ -90,13 +91,6 @@ public class DataSourceConfig {
 		String key = new AES256Util().getKey();
 		try {
 
-
-//			System.out.println(AES256Util.decryptAES256(env.getProperty(db+".username"), key));
-//			System.out.println(AES256Util.decryptAES256(env.getProperty(db+".password"), key));
-//			dataSource.setJdbcUrl(env.getProperty(db+".jdbcUrl"));
-//			dataSource.setDriverClassName(env.getProperty(db+".driverClassName"));
-//			dataSource.setUsername(AES256Util.decryptAES256(env.getProperty(db+".username"), key));
-//			dataSource.setPassword(AES256Util.decryptAES256(env.getProperty(db+".password"), key));
 			dataSource.setJdbcUrl(dsDef.getJdbcUrl());
 			dataSource.setDriverClassName(dsDef.getDriverClassName());
 			dataSource.setUsername(AES256Util.decryptAES256(dsDef.getUsername(), key));

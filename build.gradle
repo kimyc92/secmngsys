@@ -62,8 +62,11 @@ dependencies {
 	implementation 'com.sun.xml.ws:jaxws-ri:4.0.1'
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 	implementation 'com.vdurmont:emoji-java:5.1.1'
+	//implementation files('libs/AES256Util.jar')
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
+
 }
 
 tasks.named('test') {
