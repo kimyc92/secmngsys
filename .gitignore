@@ -6,9 +6,10 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-*application.yml
-*datasource.yml
-*endpoint.yml
+application.yml
+datasource.yml
+endpoint.yml
+profile/prd/application.yml
 
 # IntelliJ project files
 .idea
