@@ -84,6 +84,7 @@ camel:
 #      enabled: true
 #      coordinator-url: http://localhost:8081
 #      local-participant-url: http://localhost:8081/api
+
   rest:
     binding-mode: auto
     component: servlet
