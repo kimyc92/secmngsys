@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-@Service("todoService")
+@Service
 public class TodoServiceImpl implements TodoService {
 
     private Map<Long, Todo> todos = new ConcurrentHashMap<>();

@@ -78,11 +78,6 @@ public class UserRoute extends GlobalRouteBuilder { // RouteBuilder
 //                .handled(true)
 //                        .log("loglolgolog");
 
-
-
-        from("direct:error223")
-                .log("옵니까?????")
-                .end();
         from("servlet:///activate?httpMethodRestrict=POST,OPTION")
                 .doTry()
                     .log("dotray")

@@ -8,7 +8,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.annotation.Resource;
 import java.time.Duration;
@@ -46,19 +45,17 @@ public class CertificationDao {
     //@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor={Exception.class})
     @Transactional(rollbackFor={Exception.class})
     public void insertSmsSendsInfo(CertificationDto certificationDto) {
-        System.out.println("insertSmsDbSendsInfo Service 트랜잭션 상태 insertSmsSendsInfo "+ TransactionSynchronizationManager.isActualTransactionActive());
-        System.out.println("insertSmsDbSendsInfo Service 트랜잭션 명 insertSmsSendsInfo "+ TransactionSynchronizationManager.getCurrentTransactionName());
+        //System.out.println("insertSmsDbSendsInfo Service 트랜잭션 상태 insertSmsSendsInfo "+ TransactionSynchronizationManager.isActualTransactionActive());
+        //System.out.println("insertSmsDbSendsInfo Service 트랜잭션 명 insertSmsSendsInfo "+ TransactionSynchronizationManager.getCurrentTransactionName());
         CertificationMapper mapper = sqlSession.getMapper(CertificationMapper.class);
         mapper.insertSmsSendsInfo(certificationDto);
         //throw new CustomErrorException("테스트", ErrorCode.EXCEPTION);
     }
 
-    //@Transactional(propagation= Propagation.REQUIRES_NEW, rollbackFor={Exception.class})
     @Transactional(rollbackFor={Exception.class})
     public void insertSmsDbSendsInfo(CertificationDto certificationDto) {
-        System.out.println("insertSmsDbSendsInfo Service 트랜잭션 상태 insertSmsDbSendsInfo "+ TransactionSynchronizationManager.isActualTransactionActive());
-        System.out.println("insertSmsDbSendsInfo Service 트랜잭션 명 insertSmsDbSendsInfo "+ TransactionSynchronizationManager.getCurrentTransactionName());
-
+        //System.out.println("insertSmsDbSendsInfo Service 트랜잭션 상태 insertSmsDbSendsInfo "+ TransactionSynchronizationManager.isActualTransactionActive());
+        //System.out.println("insertSmsDbSendsInfo Service 트랜잭션 명 insertSmsDbSendsInfo "+ TransactionSynchronizationManager.getCurrentTransactionName());
         CertificationMapper mapper = sqlSession.getMapper(CertificationMapper.class);
         mapper.insertSmsDbSendsInfo(certificationDto);
         //throw new CustomErrorException("테스트", ErrorCode.EXCEPTION);

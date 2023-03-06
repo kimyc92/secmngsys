@@ -37,13 +37,15 @@ public class CertificationSql {
     public String insertSmsDbSendsInfo(@Param("certificationDto") CertificationDto certificationDto) {
         return new SQL() {{
             log.info("[INSERT] com.secmngsys.domain.certification.sql.insertSmsDbSendsInfo");
-            INSERT_INTO("TB_TEST");
-            INTO_COLUMNS("SMS_SEND_DATE,SMS_SEND_TIME,SMS_SEND_SEQ,USER_ID,USER_NM");
-            INTO_COLUMNS("USER_HP_NO,REG_DATE,REG_USER_ID,CHG_DATE,CHG_USER_ID");
-            INTO_VALUES("#{certificationDto.smsSendDate}, #{certificationDto.smsSendTime}");
-            INTO_VALUES("#{certificationDto.smsSendSeq}, #{certificationDto.userId}");
-            INTO_VALUES("#{certificationDto.userNm}, #{certificationDto.userHpNo}");
-            INTO_VALUES("SYSDATE, #{certificationDto.userId}, SYSDATE, #{certificationDto.userId}");
+            INSERT_INTO("ARREO_SMS");
+            INTO_COLUMNS("CMP_MSG_ID, CMP_USR_ID, USER_ID, MSG_GB, WRT_DTTM");
+            INTO_COLUMNS("SND_DTTM, REG_SND_DTTM, REG_RCV_DTTM, CMP_SND_DTTM, CMP_RCV_DTTM");
+            INTO_COLUMNS("SND_PHN_ID, RCV_PHN_ID, CALLBACK, SND_MSG, SMS_ST");
+            INTO_VALUES("#{certificationDto.smsSendDate}||#{certificationDto.smsSendTime}||#{certificationDto.smsSendSeq}||'SEC'");
+            INTO_VALUES("'00160', #{certificationDto.userId}, 'A'");
+            INTO_VALUES("TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'), TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')");
+            INTO_VALUES("NULL, NULL, NULL, NULL, '0222402084',#{certificationDto.userHpNo}, '0222402084'");
+            INTO_VALUES("'보안관리시스템 인증번호는 ['||#{certificationDto.certificationNumber}||'] 입니다.', '0'");
         }}.toString();
     }
 

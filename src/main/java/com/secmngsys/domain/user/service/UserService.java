@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public ResponseSuccess selectOneUserInfo(@Valid @Body UserDto userDto) {
-        List<UserVo> userVo;
+        Object userVo;
 
         // DRM
         if(userDto.getSysCd().equals("01")) {
@@ -39,6 +39,7 @@ public class UserService {
         } else {
             userVo = userDao.selectOneUserInfo(userDto);
         }
+
 
         return GlobalResponseHandler.of(userVo, SuccessCode.SUCCESS);
 

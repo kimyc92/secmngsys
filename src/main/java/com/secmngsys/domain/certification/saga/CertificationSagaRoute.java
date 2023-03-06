@@ -27,7 +27,6 @@ public class CertificationSagaRoute extends RouteBuilder {
         errorHandler(noErrorHandler());
 
         from("direct:smsSendSaga")
-                .log(ERROR, "Id: ${header.id}, Order Received: ${body}")
                 .setHeader("id", simple(UUID.randomUUID().toString()))
                 .setHeader("base_url", header("CamelHttpUrl"))
                 .setHeader("base_method", header("CamelHttpMethod"))

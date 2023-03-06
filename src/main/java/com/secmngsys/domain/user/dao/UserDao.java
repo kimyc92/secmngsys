@@ -2,6 +2,7 @@ package com.secmngsys.domain.user.dao;
 
 import com.secmngsys.domain.user.mapper.UserMapper;
 import com.secmngsys.domain.user.model.dto.UserDto;
+import com.secmngsys.domain.user.model.vo.UserDrmVo;
 import com.secmngsys.domain.user.model.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -30,15 +31,15 @@ public class UserDao {
         return userVo;
     }
 
-    public List<UserVo> selectDrmDbOneUserInfo(UserDto userDto) {
+    public List<UserDrmVo> selectDrmDbOneUserInfo(UserDto userDto) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-        List<UserVo> userVo = mapper.selectDrmDbOneUserInfo(userDto);
+        List<UserDrmVo> userDrmVo = mapper.selectDrmDbOneUserInfo(userDto);
 //        if(userVo.isEmpty()) {
 //            throw new RuntimeException("결과 값이 없습니다.");
 //            //throw new GenericSuccessCustomException("결과 값이 없습니다.", SuccessCode.NO_CONTENT);
 //        }
 
-        return userVo;
+        return userDrmVo;
     }
 
     public void updateDrmDbUserInfo(UserDto userDto) {

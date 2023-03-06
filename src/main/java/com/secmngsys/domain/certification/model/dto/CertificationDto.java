@@ -22,14 +22,26 @@ public class CertificationDto {
     private String userNm;
     @NotBlank
     private String userHpNo;
-
     private String certificationNumber;
     private String smsSendDate;
     private String smsSendTime;
     private String smsSendSeq;
     private String smsSendStatusCd;
     private String smsSendStatusNm;
-
-
+    private String cmpMsgId;
+    private String msgGroupId;
+    private String cmpUsrId;
+    private String msgGb;
+    private String wrtDttm;
+    private String sndDttm;
+    private String regSndDttm;
+    private String regRcvDttm;
+    private String cmpSndDttm;
+    private String cmpRcvDttm;
+    private String sndPhnId;
+    private String rcvPhnId;
+    private String callback;
+    private String sndMsg;
+    private String smsSt;
 
 }

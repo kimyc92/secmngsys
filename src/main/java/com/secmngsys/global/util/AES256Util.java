@@ -1,5 +1,8 @@
 package com.secmngsys.global.util;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.FileCopyUtils;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -8,8 +11,6 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.AlgorithmParameters;
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -19,7 +20,7 @@ import java.util.Base64;
  */
 public class AES256Util {
 
-    protected final String key = "sec_key";
+    protected final String key = "";
 
     public AES256Util(){
     }
@@ -38,7 +39,13 @@ public class AES256Util {
     }
 
     public String getKey() throws Exception {
-        String content = Files.readString(Paths.get("src/main/resources/profile/prd/key.txt"), StandardCharsets.UTF_8);
+        //String content = Files.readString(Paths.get(getClass().getResource("/profile/prd/key.txt").toURI()));
+        ClassPathResource resource = new ClassPathResource("profile/prd/key.txt");
+        byte[] bdata = FileCopyUtils.copyToByteArray(resource.getInputStream());
+        //Path path = Paths.get(resource.getURI());
+        String content = new String(bdata, StandardCharsets.UTF_8);
+        //String content = Files.readString(path);
+        //String content = Files.readString(Paths.get(getClass().getResource("profile/prd/key.txt").toURI(), StandardCharsets.UTF_8);
         return decryptAES256(content, key);
     }
 

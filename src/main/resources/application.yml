@@ -2,6 +2,7 @@
 # Logging                                       #
 #################################################
 logging:
+  # You Can Change Log Dir at classpath:log/logback.xml
   config: classpath:log/logback.xml
   batch:
     job:

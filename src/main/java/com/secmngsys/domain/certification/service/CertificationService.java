@@ -81,8 +81,8 @@ public class CertificationService {
 
     public ResponseSuccess smsDbSends(@Valid CertificationDto certificationDto) {
         certificationDao.insertSmsDbSendsInfo(certificationDto);
-        if(1==1)
-            throw new InvalidValueException("인증번호 생성오류");
+//        if(1==1)
+//            throw new InvalidValueException("인증번호 생성오류");
         return GlobalResponseHandler.of(SuccessCode.SUCCESS);
     }
 

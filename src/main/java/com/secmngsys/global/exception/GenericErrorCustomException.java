@@ -1,14 +1,14 @@
 package com.secmngsys.global.exception;
 
-import com.secmngsys.global.configuration.code.SuccessCode;
-import com.secmngsys.global.model.ResponseError;
 import com.secmngsys.global.configuration.code.ErrorCode;
+import com.secmngsys.global.model.ResponseError;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.List;
 
-
+@Slf4j
 @Getter
 public class GenericErrorCustomException extends RuntimeException {
 
@@ -19,7 +19,7 @@ public class GenericErrorCustomException extends RuntimeException {
     public GenericErrorCustomException(String message, ErrorCode errorCode) {
         super(message);
         this.errorCode = errorCode;
-        System.out.println("CustomErrorException!!!!!!!!!!!!");
+        log.debug("GenericErrorCustomException() - 1");
     }
 
     public GenericErrorCustomException(String message, ErrorCode errorCode
@@ -27,7 +27,7 @@ public class GenericErrorCustomException extends RuntimeException {
         super(message);
         this.errorCode = errorCode;
         this.fieldError = fieldError;
-        System.out.println("CustomErrorException!!!!!!!123123123123!!!!!");
+        log.debug("GenericErrorCustomException() - 2");
     }
 
 }
