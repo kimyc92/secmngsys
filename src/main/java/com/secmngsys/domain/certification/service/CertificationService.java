@@ -67,7 +67,6 @@ public class CertificationService {
         certificationDao.createSmsCertification(certificationDto.getUserHpNo(), certificationDto.getCertificationNumber());
         certificationDao.insertSmsSendsInfo(certificationDto);
         exchange.getIn().setBody(certificationDto);
-          //  certificationDao2.insertSmsDbSendsInfo(userDto);
 //        if(1==1)
 //            throw new InvalidValueException("일부로 에러를 냈습니당.");
        // return GlobalResponseHandler.of(SuccessCode.SUCCESS);

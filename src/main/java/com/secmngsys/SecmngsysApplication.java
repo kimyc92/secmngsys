@@ -20,11 +20,11 @@ import javax.annotation.Resource;
 @Slf4j
 public class SecmngsysApplication {
 
-	public static final String APPLICATION_LOCATIONS = "spring.config.location="
-			+ "classpath:application.yml,"
-			+ "classpath:profile/prd/application.yml,"
-			+ "classpath:profile/prd/datasource.yml,"
-			+ "classpath:profile/prd/endpoint.yml";
+	//public static final String APPLICATION_LOCATIONS = "spring.config.location="
+	//		+ "classpath:application.yml";
+			//+ "file:///Users/youngchangkim/Project/secmngsys/engn/profile/conf/prd/application.yml,"
+			//+ "file:///Users/youngchangkim/Project/secmngsys/engn/profile/conf/prd/datasource.yml,"
+			//+ "file:////Users/youngchangkim/Project/secmngsys/engn/profile/conf/prd/endpoint.yml";
 
 	@Resource
 	private ApplicationArguments applicationArguments;  // CLI 인수
@@ -36,7 +36,7 @@ public class SecmngsysApplication {
 		//System.out.println("확인 "+ new AES256Util("sec_key","my_key"));
 		System.setProperty("log4jdbc.log4j2.properties.file", "/log/log4jdbc.log4j2.properties");
 		new SpringApplicationBuilder(SecmngsysApplication.class)   	// SpringApplication.run(MyBatchApplication.class, args);
-				.properties(APPLICATION_LOCATIONS)
+		//		.properties("spring.config.location=classpath:application.yml")
 				.run(args);
 
 	}

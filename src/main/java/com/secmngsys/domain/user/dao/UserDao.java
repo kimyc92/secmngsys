@@ -25,21 +25,29 @@ public class UserDao {
         return userVo;
     }
 
-    public List<UserVo> selectOneUserInfo(UserDto userDto) {
-        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-        List<UserVo> userVo = mapper.selectUserInfo(userDto);
-        return userVo;
-    }
-
     public List<UserDrmVo> selectDrmDbOneUserInfo(UserDto userDto) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         List<UserDrmVo> userDrmVo = mapper.selectDrmDbOneUserInfo(userDto);
+
 //        if(userVo.isEmpty()) {
 //            throw new RuntimeException("결과 값이 없습니다.");
 //            //throw new GenericSuccessCustomException("결과 값이 없습니다.", SuccessCode.NO_CONTENT);
 //        }
-
         return userDrmVo;
+    }
+
+    public List<Object> selectOneUserInfo(UserDto userDto) {
+        Object userVo;
+
+        // DRM
+        if(userDto.getSysCd().equals("01")) {
+            //userVo = userDao.selectDrmDbOneUserInfo(userDto);
+            userVo = this.selectDrmDbOneUserInfo(userDto);
+        } else {
+            userVo = this.selectUserInfo(userDto);
+        }
+
+        return (List<Object>) userVo;
     }
 
     public void updateDrmDbUserInfo(UserDto userDto) {

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
+import java.util.List;
 
 
 @Slf4j
@@ -40,13 +42,15 @@ public class GenericCamalErrorCustomException {
         log.error("handleConstraintViolationException : {}", ex);
         ConstraintViolation<?> violation = ex.getConstraintViolations().iterator().next();
         // get the last node of the violation
-        /*
         String field = null;
         for (Path.Node node : violation.getPropertyPath()) {
             field = node.getName();
-            //System.out.println(field);
-        } */
-        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST, String.valueOf(violation.getMessage()));
+        }
+        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST,
+                List.of(new ResponseError.FieldError("handleConstraintViolationException"
+                        , field
+                        , String.valueOf(violation.getMessage())))
+        );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST).getBody();
     }
 
@@ -63,6 +67,26 @@ public class GenericCamalErrorCustomException {
         System.out.println(statusCode);
         final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST);
         return new ResponseEntity<>(response, HttpStatus.valueOf(201)).getBody();
+    }
+
+    /**
+     * JSON Parse를 진행 할 수 없을 경우 발생하는 에러, 400 status code와 함께 반환
+     */
+    public ResponseError handleJsonParseException(Throwable cause) {
+        log.error("handleJsonParseException : {}", cause);
+        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST,
+                "JSON Parse Error, Checking JSON TYPE");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST).getBody();
+    }
+
+    /**
+     * SQL 문법 오류로 발생하는 에러, 400 status code와 함께 반환
+     */
+    public ResponseError handleSQLSyntaxErrorException(Throwable cause) {
+        log.error("handleSQLSyntaxErrorException : {}", cause);
+        final ResponseError response = ResponseError.of(ErrorCode.BAD_REQUEST,
+                "SQL Syntax Error, Chenking SQL Syntax");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST).getBody();
     }
 
     /**

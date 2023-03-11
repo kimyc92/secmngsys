@@ -95,7 +95,7 @@ public class ResponseError { //implements Serializable {
         private String content;
 
         @Builder
-        private FieldError(final String title, final String value, final String content) {
+        public FieldError(final String title, final String value, final String content) {
             this.title = title;
             this.value = value;
             this.content = content;

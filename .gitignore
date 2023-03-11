@@ -1,4 +1,5 @@
 ### My Project Git Ignore ###
+**/profile/local/*
 **/profile/dev/*
 **/profile/prd/*
 !**/profile/sample/*

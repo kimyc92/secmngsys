@@ -1,5 +1,6 @@
 package com.secmngsys.global.exception.camel;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.secmngsys.global.model.ResponseError;
 import io.undertow.servlet.spec.HttpServletRequestImpl;
@@ -9,6 +10,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.http.base.HttpOperationFailedException;
 
 import javax.validation.ConstraintViolationException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -66,6 +68,12 @@ public class GlobalCamelException {
             System.out.println("latchThree - "+latchThree);
             latchThree.countDown();
         }
+
+        if(lastException instanceof SQLSyntaxErrorException)
+            return errorException.handleSQLSyntaxErrorException(lastException);
+
+        if(lastException instanceof JsonParseException)
+            return errorException.handleJsonParseException(lastException);
 
         if(lastException instanceof HttpOperationFailedException)
             return errorException.handleHttpOperationFailedException(lastException);

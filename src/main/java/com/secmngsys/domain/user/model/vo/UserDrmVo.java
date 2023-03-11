@@ -1,12 +1,14 @@
 package com.secmngsys.domain.user.model.vo;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
-@NoArgsConstructor
+@ToString
 public class UserDrmVo extends UserVo {
-
+//    public void dd(){
+//        this.set
+//    }
     private String dsdcode;
     private String deptCode;
     private String deptName;
@@ -23,5 +25,6 @@ public class UserDrmVo extends UserVo {
     private String usedPwd;
     private String pwdErrCnt;
     private String linkedYn;
+
 
 }

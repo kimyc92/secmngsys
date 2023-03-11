@@ -41,7 +41,7 @@ public class CertificationSql {
             INTO_COLUMNS("CMP_MSG_ID, CMP_USR_ID, USER_ID, MSG_GB, WRT_DTTM");
             INTO_COLUMNS("SND_DTTM, REG_SND_DTTM, REG_RCV_DTTM, CMP_SND_DTTM, CMP_RCV_DTTM");
             INTO_COLUMNS("SND_PHN_ID, RCV_PHN_ID, CALLBACK, SND_MSG, SMS_ST");
-            INTO_VALUES("#{certificationDto.smsSendDate}||#{certificationDto.smsSendTime}||#{certificationDto.smsSendSeq}||'SEC'");
+            INTO_VALUES("'SEC'||#{certificationDto.smsSendDate}||#{certificationDto.smsSendTime}||#{certificationDto.smsSendSeq}");
             INTO_VALUES("'00160', #{certificationDto.userId}, 'A'");
             INTO_VALUES("TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'), TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')");
             INTO_VALUES("NULL, NULL, NULL, NULL, '0222402084',#{certificationDto.userHpNo}, '0222402084'");

@@ -8,22 +8,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelException;
 import org.apache.camel.CamelExecutionException;
 import org.apache.camel.RuntimeCamelException;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-//import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
@@ -61,7 +54,6 @@ public class GlobalException {
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     protected ResponseEntity<ResponseError> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error("handleMethodArgumentNotValidException", e);
-        System.out.println("왜여기 안들어옴 ㅡㅡ");
         final ResponseError response = ResponseError.of(ErrorCode.INVALID_INPUT_VALUE, e.getBindingResult());
         return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
@@ -113,7 +105,7 @@ public class GlobalException {
      */
     @ExceptionHandler(value = {GenericErrorCustomException.class})
     protected ResponseEntity<ResponseError> handleGenericErrorCustomException(final GenericErrorCustomException e) {
-        log.info("GenericErrorCustomException", e);
+        log.error("GenericErrorCustomException", e);
         final ErrorCode errorCode = e.getErrorCode();
         final List<ResponseError.FieldError> fieldError = e.getFieldError();
         final ResponseError response = ResponseError.of(errorCode, fieldError);
@@ -125,20 +117,16 @@ public class GlobalException {
      */
     @ExceptionHandler(GenericSuccessCustomException.class)
     protected ResponseEntity<ResponseSuccess> handleGenericSuccessCustomException(final GenericSuccessCustomException e) {
-        log.debug("CustomSuccessException", e);
+        log.error("CustomSuccessException", e);
         final SuccessCode successCode = e.getSuccessCode();
         final ResponseSuccess response = ResponseSuccess.of(successCode);
-//        System.out.println("getCode - "+response.getCode());
-//        System.out.println("getData - "+response.getData());
-//        System.out.println("getMessage - "+response.getMessage());
         return new ResponseEntity<>(response, successCode.getStatus());
     }
 
     @ExceptionHandler(org.apache.camel.http.base.HttpOperationFailedException.class)
     protected ResponseEntity<ResponseError> handleHttpOperationFailedException(final org.apache.camel.http.base.HttpOperationFailedException e) {
-        log.info("HttpOperationFailedException", e);
+        log.error("HttpOperationFailedException", e);
         //final SuccessCode successCode = e.getSuccessCode();
-        System.out.println("handleHttpOperationFailedException!@!@@!@!@!@!@!@!@");
         final ResponseError response = ResponseError.of(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -149,7 +137,6 @@ public class GlobalException {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ResponseError> handleException(Exception e) {
         log.error("Exception", e);
-        System.out.println("요깅네?");
         final ResponseError response = ResponseError.of(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -157,14 +144,11 @@ public class GlobalException {
     @ExceptionHandler(RuntimeCamelException.class)
     public ResponseEntity<ResponseError> camelExchangeExceptions(RuntimeCamelException e) {
         log.error("RuntimeCamelException", e);
-        System.out.println("요깅네?");
         final ResponseError response = ResponseError.of(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler({CamelException.class, CamelExecutionException.class})
     public ResponseEntity<ResponseError> camelExchangeExceptions(CamelException ex) {
-
-        System.out.println("zzzzzzzzzzzzz - "+ ex.getClass());
 //        if (ex instanceof org.apache.camel.http.common.HttpOperationFailedException) {
 //            org.apache.camel.http.common.HttpOperationFailedException exception = (org.apache.camel.http.common.HttpOperationFailedException) ex;
 //            return ResponseEntity
@@ -181,17 +165,12 @@ public class GlobalException {
 
         final ResponseError response = ResponseError.of(ErrorCode.INTERNAL_SERVER_ERROR, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-
-//        return ResponseEntity
-//                .status(499)
-//                .body(new ErrorCode(ex.getMessage()));
     }
 
 //    @ExceptionHandler(RuntimeCamelException.class)
 //    protected ResponseEntity<ResponseError> handleRuntimeCamelException(final RuntimeCamelException e) {
 //        //log.error("GenericCamelCustomException", e);
 //        //final SuccessCode successCode = e.getSuccessCode();
-//        System.out.println("!!!!!!!!!!!RuntimeCamelException!@!@@!@!@!@!@!@!@");
 //        final ResponseError response = ResponseError.of(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
 //        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 //    }
